@@ -1,0 +1,231 @@
+{
+  "person": {
+    "name": "Abu Huraira",
+    "monogram": "AH",
+    "role": "Full-Stack Web Developer",
+    "tagline": "Specializing in Web Development, AI Automation, and Software Development to build intuitive, high-performance digital solutions.",
+    "location": "Dhaka, Bangladesh",
+    "timezone": "UTC+6",
+    "email": "abuhurairaconnects@gmail.com",
+    "social": {
+      "github": "https://github.com/abuhurairaconnects",
+      "linkedin": "https://linkedin.com"
+    },
+    "photo": "/profile-1791269474799.jpg"
+  },
+  "availability": {
+    "enabled": true,
+    "label": "Available for new opportunities"
+  },
+  "resumeUrl": "/resume.pdf",
+  "scheduling": {
+    "enabled": true,
+    "url": "https://cal.com",
+    "label": "15-min Quick Sync"
+  },
+  "stats": [
+    {
+      "label": "Years Engineering",
+      "value": "6+",
+      "verified": true
+    },
+    {
+      "label": "Production Deployments",
+      "value": "30+",
+      "verified": true
+    },
+    {
+      "label": "Peak System Concurrency",
+      "value": "15k req/s",
+      "verified": true
+    }
+  ],
+  "about": {
+    "paragraphs": [
+      "I am Abu Huraira, a dedicated Full-Stack Web Developer, Software Developer, Application Developer, and AI Automation Expert. With a passion for building robust digital products, I bridge creative frontend design with resilient engineering—delivering high-performance web platforms, intuitive mobile/cross-platform applications, and robust software architectures that scale effortlessly.",
+      "Beyond standard development, I specialize in next-generation AI Automation. I engineer intelligent workflows, autonomous multi-agent pipelines, and custom API automations that streamline complex business operations, eliminate redundant manual tasks, and unlock exponential productivity for modern businesses."
+    ],
+    "focus": [
+      {
+        "title": "Full-Stack Web Development",
+        "text": "Engineering end-to-end, ultra-fast web platforms using Next.js, React, Node.js, and TypeScript. From responsive, accessible user interfaces to robust database architecture and secure REST/GraphQL APIs."
+      },
+      {
+        "title": "Software Development",
+        "text": "Building scalable, maintainable, and type-safe software solutions with clean architecture principles, modular services, deterministic test coverage, and enterprise-grade reliability."
+      },
+      {
+        "title": "Application Development",
+        "text": "Crafting intuitive, cross-platform applications featuring fluid UI interactions, offline capabilities, state management, and seamless performance across desktop, web, and mobile environments."
+      },
+      {
+        "title": "AI Automation Expert",
+        "text": "Developing autonomous AI agents, LLM-powered business automations, intelligent data processing pipelines, and smart bot integrations to eliminate repetitive workflows and boost business efficiency."
+      }
+    ]
+  },
+  "stack": [
+    {
+      "category": "Frontend",
+      "tools": [
+        {
+          "name": "Next.js",
+          "icon": "nextdotjs"
+        },
+        {
+          "name": "React",
+          "icon": "react"
+        },
+        {
+          "name": "TypeScript",
+          "icon": "typescript"
+        },
+        {
+          "name": "Tailwind CSS",
+          "icon": "tailwindcss"
+        }
+      ]
+    },
+    {
+      "category": "Backend",
+      "tools": [
+        {
+          "name": "Node.js",
+          "icon": "nodedotjs"
+        },
+        {
+          "name": "Go",
+          "icon": "go"
+        },
+        {
+          "name": "Python",
+          "icon": "python"
+        },
+        {
+          "name": "GraphQL",
+          "icon": "graphql"
+        }
+      ]
+    },
+    {
+      "category": "Database & Data",
+      "tools": [
+        {
+          "name": "PostgreSQL",
+          "icon": "postgresql"
+        },
+        {
+          "name": "Redis",
+          "icon": "redis"
+        },
+        {
+          "name": "ClickHouse",
+          "icon": "clickhouse"
+        },
+        {
+          "name": "Prisma",
+          "icon": "prisma"
+        }
+      ]
+    },
+    {
+      "category": "DevOps & Tools",
+      "tools": [
+        {
+          "name": "Docker",
+          "icon": "docker"
+        },
+        {
+          "name": "Kubernetes",
+          "icon": "kubernetes"
+        },
+        {
+          "name": "Terraform",
+          "icon": "terraform"
+        },
+        {
+          "name": "GitHub Actions",
+          "icon": "githubactions"
+        }
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "slug": "madrasa-management-system",
+      "title": "Madrasa Management System",
+      "summary": "A comprehensive full-stack management web portal designed for madrasas to streamline student admissions, attendance, fee collection, and academic records.",
+      "featured": true,
+      "problem": "Manual paper-based record keeping, delayed fee collection tracking, lack of centralized student databases, and time-consuming report card generation.",
+      "solution": "Engineered an automated web application featuring role-based dashboards, automated student billing and fee receipts, digital attendance, and instant grade sheet generation.",
+      "tech": [
+        "React",
+        "Node.js",
+        "Express",
+        "MongoDB",
+        "Tailwind CSS"
+      ],
+      "links": {
+        "live": "https://madrasa-management-mlo9.onrender.com/",
+        "repo": "https://github.com/abuhurairaconnects/madrasa-management"
+      },
+      "image": "/madrasa-logo.png",
+      "imageAlt": "Madrasa Management System Logo"
+    }
+  ],
+  "experience": [
+    {
+      "role": "Lead Platform Engineer",
+      "org": "Vanguard Systems",
+      "type": "full-time",
+      "start": "2023",
+      "end": "Present",
+      "summary": "Spearheading infrastructure modernization, Kubernetes cluster governance, and core API resilience across 14 cross-functional microservices."
+    },
+    {
+      "role": "Senior Backend Engineer",
+      "org": "CloudScale Technologies",
+      "type": "full-time",
+      "start": "2021",
+      "end": "2023",
+      "summary": "Architected distributed caching layers and optimized transactional PostgreSQL queries, cutting p95 response times by 40% across tier-1 endpoints."
+    },
+    {
+      "role": "Full-Stack Engineer",
+      "org": "Nexus Digital",
+      "type": "full-time",
+      "start": "2019",
+      "end": "2021",
+      "summary": "Delivered responsive, accessible Next.js web applications and integrated secure RESTful APIs with automated CI/CD pipeline automation."
+    },
+    {
+      "role": "Core Contributor",
+      "org": "Open Source Tooling",
+      "type": "open-source",
+      "start": "2020",
+      "end": "Present",
+      "summary": "Authored and maintain developer tooling for TypeScript AST analysis, schema migrations, and high-performance HTTP middleware."
+    }
+  ],
+  "openSource": {
+    "enabled": true,
+    "repos": [
+      {
+        "name": "resilient-circuit-breaker",
+        "url": "https://github.com",
+        "description": "Zero-dependency lightweight circuit breaker implementation for Node.js and TypeScript HTTP clients."
+      },
+      {
+        "name": "fast-bloom-filter",
+        "url": "https://github.com",
+        "description": "Memory-efficient Bloom filter with deterministic MurmurHash3 hashing for distributed cache lookups."
+      }
+    ]
+  },
+  "seo": {
+    "siteUrl": "https://abuhuraira.dev",
+    "title": "Abu Huraira | Full-Stack Web Developer",
+    "description": "Portfolio of Abu Huraira, Full-Stack Web Developer specializing in Web Development, AI Automation, and Software Development.",
+    "ogImage": "/og-image.png"
+  }
+}

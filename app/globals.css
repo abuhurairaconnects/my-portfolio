@@ -1,0 +1,81 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Light Theme Tokens - WCAG AA compliant */
+  --bg: #FFFFFF;
+  --surface: #F8FAFC;
+  --border: #E2E8F0;
+  --text: #0F172A;
+  --text-muted: #475569;
+  --accent: #C2410C;
+  --accent-fg: #FFFFFF;
+  --accent-glow: rgba(194, 65, 12, 0.12);
+  --success: #15803D;
+}
+
+.dark {
+  /* Dark Theme Tokens (Default) */
+  --bg: #0B0F17;
+  --surface: #111827;
+  --border: rgba(255, 255, 255, 0.08);
+  --text: #F8FAFC;
+  --text-muted: #94A3B8;
+  --accent: #F97316;
+  --accent-fg: #0B0F17;
+  --accent-glow: rgba(249, 115, 22, 0.16);
+  --success: #22C55E;
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    color-scheme: dark light;
+  }
+
+  section[id] {
+    scroll-margin-top: 85px;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Accessible Focus-visible Rings across all interactive items */
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+}
+
+/* Reduced Motion strictly respects OS preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .pulse-indicator {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+}
+
+/* Single allowed hero glow utility */
+.hero-glow-effect {
+  background: radial-gradient(circle at center, var(--accent-glow) 0%, transparent 70%);
+}

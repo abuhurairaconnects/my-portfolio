@@ -1,0 +1,26 @@
+[
+  {
+    "id": "msg-1791289898289-v0fl2",
+    "name": "sahadat",
+    "email": "mrhuraira78@gmail.com",
+    "message": "assalamu alaikum",
+    "createdAt": "2026-10-06T12:31:38.289Z",
+    "read": true
+  },
+  {
+    "id": "msg-1791289242921-i4is5",
+    "name": "Dr. Tariqul Islam",
+    "email": "tariqul@enterprise.org",
+    "message": "We are looking for an AI Automation Expert and Full-Stack Developer to build our institutional portal.",
+    "createdAt": "2026-10-06T12:20:42.921Z",
+    "read": false
+  },
+  {
+    "id": "msg-1791288049103-v5k9c",
+    "name": "Client Inquiry",
+    "email": "client@example.com",
+    "message": "Hello Abu Huraira, we would love to hire you for our AI Automation and Full-Stack project.",
+    "createdAt": "2026-10-06T12:00:49.103Z",
+    "read": false
+  }
+]
