@@ -60,7 +60,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     // 5. Minimum Submission Time Check (Protection against automated scripts)
     if (formLoadTimestamp) {
       const elapsedMs = Date.now() - formLoadTimestamp;
-      if (elapsedMs < 1500) {
+      if (elapsedMs < 300) {
         console.warn(`[Spam Detected] Form submitted too quickly (${elapsedMs}ms) by IP: ${ip}`);
         // Silent success to fool script
         return NextResponse.json(

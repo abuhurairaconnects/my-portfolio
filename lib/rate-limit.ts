@@ -59,7 +59,7 @@ export async function checkRateLimit(identifier: string): Promise<RateLimitResul
   // Fallback: In-memory window rate limiter (Development / Fallback)
   const now = Date.now();
   const windowDurationMs = 60 * 60 * 1000; // 1 hour
-  const limit = isProduction ? 5 : 50;
+  const limit = isProduction ? 15 : 50;
 
   const entry = memoryStore.get(identifier);
 
