@@ -1,3 +1,5 @@
 {
-  "password": "951247"
+  "password": "951247",
+  "provider": "resend",
+  "notificationEmail": "abuhuraira.connects@gmail.com"
 }

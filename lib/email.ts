@@ -82,7 +82,9 @@ function buildHtmlTemplate(name: string, email: string, message: string, isTest:
 export async function sendContactEmail(payload: SendEmailPayload): Promise<SendEmailResult> {
   const config = await getEmailConfig();
   const { name, email, message } = payload;
-  const toEmail = config.toEmail || "abuhurairaconnects@gmail.com";
+  const rawTo = config.toEmail || "abuhuraira.connects@gmail.com";
+  // Ensure Resend validation passes for abuhuraira.connects@gmail.com
+  const toEmail = rawTo.replace("abuhurairaconnects@gmail.com", "abuhuraira.connects@gmail.com");
 
   // 1. Try Resend if configured
   if (config.resendApiKey && (config.provider === "resend" || config.provider === "none")) {
