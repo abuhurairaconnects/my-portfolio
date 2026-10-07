@@ -1,8 +1,7 @@
 import type { MetadataRoute } from "next";
 import { getPortfolioData } from "@/lib/server/portfolio";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export const revalidate = 86400;
 
 export default function robots(): MetadataRoute.Robots {
   const portfolio = getPortfolioData();

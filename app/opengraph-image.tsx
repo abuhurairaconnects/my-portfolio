@@ -1,8 +1,7 @@
 import { ImageResponse } from "next/og";
 import { getPortfolioData } from "@/lib/server/portfolio";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export const revalidate = 86400;
 export const alt = "Abu Huraira — Full-Stack Web Developer";
 export const size = {
   width: 1200,
