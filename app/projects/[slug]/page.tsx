@@ -6,8 +6,14 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { CaseStudyView } from "@/components/project/CaseStudyView";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export const revalidate = 3600;
+
+export async function generateStaticParams() {
+  const portfolio = getPortfolioData();
+  return (portfolio.projects || []).map((project) => ({
+    slug: project.slug,
+  }));
+}
 
 interface PageProps {
   params: Promise<{

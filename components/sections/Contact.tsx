@@ -22,6 +22,7 @@ import { portfolio } from "@/data/portfolio";
 import { PortfolioData, contactFormSchema, ContactFormData } from "@/lib/validations";
 import { Button } from "@/components/ui/Button";
 import { MotionReveal } from "@/components/ui/MotionReveal";
+import { submitContactAction } from "@/app/actions/contact";
 
 interface ContactProps {
   data?: PortfolioData;
@@ -64,23 +65,17 @@ export function Contact({ data = portfolio }: ContactProps): React.ReactElement 
     }
   };
 
-  const onSubmit = async (data: ContactFormData): Promise<void> => {
+  const onSubmit = async (formData: ContactFormData): Promise<void> => {
     setSubmitStatus("loading");
     setErrorMessage("");
 
     try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...data,
-          formLoadTimestamp: loadTimestamp,
-        }),
+      const result = await submitContactAction({
+        ...formData,
+        formLoadTimestamp: loadTimestamp,
       });
 
-      const result = await response.json();
-
-      if (!response.ok) {
+      if (!result.success) {
         throw new Error(
           result.error || "Unable to send message. Please contact directly via email."
         );

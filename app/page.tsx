@@ -10,9 +10,8 @@ import { OpenSource } from "@/components/sections/OpenSource";
 import { Contact } from "@/components/sections/Contact";
 import { getPortfolioData } from "@/lib/server/portfolio";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
-export const fetchCache = "force-no-store";
+// Next.js 15 ISR: Static prerendering at build time with hourly background revalidation
+export const revalidate = 3600;
 
 export default function Home(): React.ReactElement {
   const data = getPortfolioData();
@@ -22,12 +21,24 @@ export default function Home(): React.ReactElement {
       <Navbar data={data} />
       <main id="main-content" tabIndex={-1}>
         <Hero data={data} />
-        <About data={data} />
-        <TechStack data={data} />
-        <Projects data={data} />
-        <Experience data={data} />
-        <OpenSource data={data} />
-        <Contact data={data} />
+        <React.Suspense fallback={<div className="min-h-[300px] animate-pulse" />}>
+          <About data={data} />
+        </React.Suspense>
+        <React.Suspense fallback={<div className="min-h-[300px] animate-pulse" />}>
+          <TechStack data={data} />
+        </React.Suspense>
+        <React.Suspense fallback={<div className="min-h-[400px] animate-pulse" />}>
+          <Projects data={data} />
+        </React.Suspense>
+        <React.Suspense fallback={<div className="min-h-[400px] animate-pulse" />}>
+          <Experience data={data} />
+        </React.Suspense>
+        <React.Suspense fallback={<div className="min-h-[300px] animate-pulse" />}>
+          <OpenSource data={data} />
+        </React.Suspense>
+        <React.Suspense fallback={<div className="min-h-[400px] animate-pulse" />}>
+          <Contact data={data} />
+        </React.Suspense>
       </main>
       <Footer data={data} />
     </div>

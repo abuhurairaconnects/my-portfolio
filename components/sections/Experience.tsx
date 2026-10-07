@@ -1,7 +1,4 @@
-"use client";
-
 import * as React from "react";
-import { motion } from "framer-motion";
 import { Briefcase, GitBranch, Award, Code2 } from "lucide-react";
 import { portfolio } from "@/data/portfolio";
 import { PortfolioData } from "@/lib/validations";
@@ -39,26 +36,19 @@ export function Experience({ data = portfolio }: ExperienceProps): React.ReactEl
             const Icon = TYPE_ICONS[item.type] || Briefcase;
 
             return (
-              <motion.li
+              <li
                 key={`${item.org}-${item.start}`}
-                initial={{ opacity: 0, y: 22, scale: 0.98 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                viewport={{ once: false, amount: 0.2 }}
-                transition={{
-                  duration: 0.45,
-                  delay: index * 0.08,
-                  ease: [0.22, 1, 0.36, 1],
-                }}
-                className="relative pl-7 sm:pl-9 group"
+                className="relative pl-7 sm:pl-9 group list-none"
               >
                 {/* Timeline node dot */}
                 <span className="absolute -left-3.5 top-1.5 w-7 h-7 rounded-full border border-border bg-surface flex items-center justify-center text-text-muted group-hover:border-accent group-hover:text-accent group-hover:scale-110 transition-all duration-200 shadow">
                   <Icon className="w-3.5 h-3.5" aria-hidden="true" />
                 </span>
 
-                <motion.div
-                  whileHover={{ y: -3, transition: { duration: 0.2 } }}
-                  className="rounded-2xl border border-border bg-surface/80 p-6 sm:p-7 space-y-3.5 transition-colors duration-200 hover:border-accent/50 shadow-sm hover:shadow-md"
+                <MotionReveal
+                  direction="up"
+                  delay={index * 0.08}
+                  className="rounded-2xl border border-border bg-surface/80 p-6 sm:p-7 space-y-3.5 transition-all duration-200 hover:-translate-y-1 hover:border-accent/50 shadow-sm hover:shadow-md"
                 >
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <div>
@@ -83,8 +73,8 @@ export function Experience({ data = portfolio }: ExperienceProps): React.ReactEl
                   <p className="text-sm text-text-muted leading-relaxed">
                     {item.summary}
                   </p>
-                </motion.div>
-              </motion.li>
+                </MotionReveal>
+              </li>
             );
           })}
         </ol>
