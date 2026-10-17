@@ -1,0 +1,104 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Swiss Architectural Obsidian Noir Tokens */
+  --bg-primary: #08090D;
+  --bg-surface: #11131A;
+  --bg-surface-hover: #161922;
+  --bg-surface-subtle: #1B1F2B;
+  --border-subtle: #1E2230;
+  --border-active: #2E354B;
+  --ink-primary: #F4F4F6;
+  --ink-secondary: #8E93A4;
+  --ink-muted: #535868;
+  --accent-emerald: #10B981;
+  --accent-amber: #F59E0B;
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+  background-color: var(--bg-primary);
+  color: var(--ink-primary);
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+body {
+  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
+  background-color: var(--bg-primary);
+  color: var(--ink-primary);
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+::selection {
+  background: rgba(16, 185, 129, 0.3);
+  color: #F4F4F6;
+}
+
+/* Custom Minimal Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #08090D;
+}
+::-webkit-scrollbar-thumb {
+  background: #1E2230;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2E354B;
+}
+
+/* Shimmer Light Beam Effect */
+@keyframes shimmerSweep {
+  0% {
+    left: -120%;
+  }
+  50% {
+    left: 140%;
+  }
+  100% {
+    left: 140%;
+  }
+}
+
+.shimmer-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(16, 185, 129, 0.2) 50%,
+    transparent 100%
+  );
+  transform: skewX(-20deg);
+  animation: shimmerSweep 3.5s infinite cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+/* Architectural Utilities */
+@layer utilities {
+  .card-surface {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .card-surface:hover {
+    background-color: var(--bg-surface-hover);
+    border-color: var(--border-active);
+  }
+}
+
