@@ -34,7 +34,7 @@ export function SpiderCursor() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
-    // Respect user's accessibility preferences
+    // Respect accessibility preferences
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) return;
 
@@ -62,15 +62,12 @@ export function SpiderCursor() {
     updateCanvasSize();
     window.addEventListener('resize', updateCanvasSize);
 
-    // Initial position: center-left
-    let posX = width * 0.45;
+    // Initial position
+    let posX = width * 0.5;
     let posY = height * 0.45;
     let targetX = posX;
     let targetY = posY;
-    let velX = 0;
-    let velY = 0;
     let angle = -Math.PI / 4;
-    let targetAngle = angle;
     let hasMouseMoved = false;
 
     // Silk dragline points
@@ -81,29 +78,27 @@ export function SpiderCursor() {
     let pounceTimer = 0;
 
     // 8 Legs with biological arachnid geometry (4 left, 4 right)
-    // Scaled for crisp visibility on obsidian noir background
-    // Group 0 and Group 1 alternate in classic arachnid metachronal gait
     const legConfigs = [
-      // Left Leg 1 (Front Left: reaching forward-left)
+      // Left Leg 1 (Front Left)
       { baseX: 6, baseY: -7, restX: 34, restY: -38, seg1: 24, seg2: 30, group: 0, side: -1, kneeBias: 1.1 },
-      // Left Leg 2 (Mid-Front Left: reaching out-left)
+      // Left Leg 2 (Mid-Front Left)
       { baseX: 3, baseY: -8, restX: 14, restY: -48, seg1: 23, seg2: 29, group: 1, side: -1, kneeBias: 1.0 },
-      // Left Leg 3 (Mid-Back Left: reaching out-back-left)
+      // Left Leg 3 (Mid-Back Left)
       { baseX: -3, baseY: -8, restX: -16, restY: -46, seg1: 23, seg2: 29, group: 0, side: -1, kneeBias: 1.0 },
-      // Left Leg 4 (Rear Left: reaching far back-left)
+      // Left Leg 4 (Rear Left)
       { baseX: -7, baseY: -7, restX: -42, restY: -36, seg1: 27, seg2: 33, group: 1, side: -1, kneeBias: 1.1 },
 
-      // Right Leg 1 (Front Right: reaching forward-right)
+      // Right Leg 1 (Front Right)
       { baseX: 6, baseY: 7, restX: 34, restY: 38, seg1: 24, seg2: 30, group: 1, side: 1, kneeBias: 1.1 },
-      // Right Leg 2 (Mid-Front Right: reaching out-right)
+      // Right Leg 2 (Mid-Front Right)
       { baseX: 3, baseY: 8, restX: 14, restY: 48, seg1: 23, seg2: 29, group: 0, side: 1, kneeBias: 1.0 },
-      // Right Leg 3 (Mid-Back Right: reaching out-back-right)
+      // Right Leg 3 (Mid-Back Right)
       { baseX: -3, baseY: 8, restX: -16, restY: 46, seg1: 23, seg2: 29, group: 1, side: 1, kneeBias: 1.0 },
-      // Right Leg 4 (Rear Right: reaching far back-right)
+      // Right Leg 4 (Rear Right)
       { baseX: -7, baseY: 7, restX: -42, restY: 36, seg1: 27, seg2: 33, group: 0, side: 1, kneeBias: 1.1 },
     ];
 
-    // Initialize legs at their resting footprint
+    // Initialize legs at resting footprints
     const legs: Leg[] = legConfigs.map((cfg) => {
       const cosA = Math.cos(angle);
       const sinA = Math.sin(angle);
@@ -134,31 +129,54 @@ export function SpiderCursor() {
     let gaitPhase = 0;
     let stepCooldown = 0;
 
-    // Mouse & Touch listeners
-    const onMouseMove = (e: MouseEvent) => {
-      targetX = e.clientX;
-      targetY = e.clientY;
-      hasMouseMoved = true;
+    // Pointer tracking with instant sync
+    const updateTarget = (clientX: number, clientY: number) => {
+      targetX = clientX;
+      targetY = clientY;
+
+      // On very first movement, immediately snap spider to cursor position
+      if (!hasMouseMoved) {
+        hasMouseMoved = true;
+        posX = clientX;
+        posY = clientY;
+        const cosA = Math.cos(angle);
+        const sinA = Math.sin(angle);
+        legs.forEach((leg) => {
+          const wx = posX + cosA * leg.restOffsetX - sinA * leg.restOffsetY;
+          const wy = posY + sinA * leg.restOffsetX + cosA * leg.restOffsetY;
+          leg.currentX = wx;
+          leg.currentY = wy;
+          leg.fromX = wx;
+          leg.fromY = wy;
+          leg.toX = wx;
+          leg.toY = wy;
+          leg.isStepping = false;
+        });
+      }
+    };
+
+    const onPointerMove = (e: PointerEvent | MouseEvent) => {
+      updateTarget(e.clientX, e.clientY);
     };
 
     const onTouchMove = (e: TouchEvent) => {
       if (e.touches.length > 0) {
-        targetX = e.touches[0].clientX;
-        targetY = e.touches[0].clientY;
-        hasMouseMoved = true;
+        updateTarget(e.touches[0].clientX, e.touches[0].clientY);
       }
     };
 
     const onPointerDown = () => {
-      // Agitated pounce / startled jump impulse
       pounceTimer = 1.0;
     };
 
-    window.addEventListener('mousemove', onMouseMove, { passive: true });
-    window.addEventListener('touchmove', onTouchMove, { passive: true });
-    window.addEventListener('pointerdown', onPointerDown, { passive: true });
+    // Attach listeners with capture across both window and document
+    window.addEventListener('pointermove', onPointerMove, { capture: true, passive: true });
+    window.addEventListener('mousemove', onPointerMove, { capture: true, passive: true });
+    window.addEventListener('touchmove', onTouchMove, { capture: true, passive: true });
+    window.addEventListener('pointerdown', onPointerDown, { capture: true, passive: true });
+    document.addEventListener('pointermove', onPointerMove, { capture: true, passive: true });
 
-    // Handle tab visibility to pause loop
+    // Handle tab visibility
     let isTabVisible = !document.hidden;
     const onVisibilityChange = () => {
       isTabVisible = !document.hidden;
@@ -182,15 +200,10 @@ export function SpiderCursor() {
       const maxReach = len1 + len2;
       const clampedDist = Math.max(3, Math.min(dist, maxReach * 0.96));
 
-      // Angle from base to foot
       const baseAngle = Math.atan2(dy, dx);
-
-      // Cosine rule for angle at base joint
       const cosAngle = (len1 * len1 + clampedDist * clampedDist - len2 * len2) / (2 * len1 * clampedDist);
       const safeCos = Math.max(-1, Math.min(1, cosAngle));
       const interiorAngle = Math.acos(safeCos) * bias;
-
-      // Outward knee protrusion
       const kneeAngle = baseAngle + side * interiorAngle;
 
       const kx = bx + Math.cos(kneeAngle) * len1;
@@ -214,71 +227,58 @@ export function SpiderCursor() {
       ctx.scale(dpr, dpr);
       ctx.clearRect(0, 0, width, height);
 
-      // Gentle ambient hover motion when mouse hasn't moved yet
+      // Subtle ambient hover if mouse has never moved
       if (!hasMouseMoved) {
         const time = currentTime * 0.0008;
-        targetX = width * 0.5 + Math.sin(time * 0.7) * 110;
-        targetY = height * 0.45 + Math.cos(time * 0.9) * 80;
+        targetX = width * 0.5 + Math.sin(time * 0.7) * 90;
+        targetY = height * 0.45 + Math.cos(time * 0.9) * 60;
       }
 
-      // Distance to target
-      const toMouseX = targetX - posX;
-      const toMouseY = targetY - posY;
-      const distToTarget = Math.hypot(toMouseX, toMouseY);
+      // Distance to target cursor
+      const toTargetX = targetX - posX;
+      const toTargetY = targetY - posY;
+      const distToTarget = Math.hypot(toTargetX, toTargetY);
 
-      // Instant / super-fast heading alignment
-      if (distToTarget > 6) {
-        targetAngle = Math.atan2(toMouseY, toMouseX);
+      // Critically damped pursuit without dead-zone or overshoot:
+      // High responsiveness: instantly tracks cursor with silky smooth ease
+      const followRate = distToTarget > 200 ? 32 : 24;
+      const followFactor = 1 - Math.exp(-followRate * dt);
+
+      const prevX = posX;
+      const prevY = posY;
+
+      posX += toTargetX * followFactor;
+      posY += toTargetY * followFactor;
+
+      const frameDeltaX = posX - prevX;
+      const frameDeltaY = posY - prevY;
+      const currentSpeed = Math.hypot(frameDeltaX, frameDeltaY) / Math.max(0.0001, dt);
+
+      // Smooth heading alignment: face directly towards cursor movement
+      if (currentSpeed > 5 || distToTarget > 3) {
+        const moveHeading = Math.atan2(toTargetY, toTargetX);
+        let angleDiff = moveHeading - angle;
+        while (angleDiff < -Math.PI) angleDiff += Math.PI * 2;
+        while (angleDiff > Math.PI) angleDiff -= Math.PI * 2;
+        const turnRate = 26;
+        angle += angleDiff * (1 - Math.exp(-turnRate * dt));
       }
 
-      let angleDiff = targetAngle - angle;
-      while (angleDiff < -Math.PI) angleDiff += Math.PI * 2;
-      while (angleDiff > Math.PI) angleDiff -= Math.PI * 2;
-      // High-speed responsiveness: turns instantly when far away
-      const turnSpeed = distToTarget > 140 ? 36.0 : 22.0;
-      angle += angleDiff * Math.min(1, turnSpeed * dt);
-
-      // Super responsive speed curve:
-      // When user moves mouse across the screen, the spider immediately rushes at turbo speed!
-      const stopDistance = 22; // snug right near cursor
-      let speed = 0;
-
-      if (distToTarget > stopDistance) {
-        const moveDist = distToTarget - stopDistance;
-        // Scales proportionally with distance up to 4200 px/s so it keeps up instantly
-        speed = Math.min(4200, moveDist * 14 + 220);
-      }
-
+      // Decrement pounce timer
       if (pounceTimer > 0) {
         pounceTimer = Math.max(0, pounceTimer - dt * 3.0);
       }
 
-      // Desired velocity vector
-      // At larger distances, blend directly towards the target for immediate interception
-      const directAngle = Math.atan2(toMouseY, toMouseX);
-      const headingBlend = distToTarget > 140 ? 0.4 : 0.05;
-      const moveAngle = angle * (1 - headingBlend) + directAngle * headingBlend;
-
-      const desiredVelX = Math.cos(moveAngle) * speed;
-      const desiredVelY = Math.sin(moveAngle) * speed;
-
-      // Ultra-snappy acceleration: 28.0 (no sluggish ramp-up lag)
-      const accel = 28.0;
-      velX += (desiredVelX - velX) * Math.min(1, accel * dt);
-      velY += (desiredVelY - velY) * Math.min(1, accel * dt);
-
-      posX += velX * dt;
-      posY += velY * dt;
-
-      // Silk dragline trailing from spinneret
       const cosA = Math.cos(angle);
       const sinA = Math.sin(angle);
+
+      // Silk dragline trailing from spinneret
       const spinneretX = posX - cosA * 20;
       const spinneretY = posY - sinA * 20;
 
       if (
         silkTrail.length === 0 ||
-        Math.hypot(spinneretX - silkTrail[0].x, spinneretY - silkTrail[0].y) > 16
+        Math.hypot(spinneretX - silkTrail[0].x, spinneretY - silkTrail[0].y) > 14
       ) {
         silkTrail.unshift({ x: spinneretX, y: spinneretY, alpha: 0.35 });
         if (silkTrail.length > MAX_SILK_POINTS) {
@@ -291,7 +291,7 @@ export function SpiderCursor() {
         ctx.beginPath();
         ctx.moveTo(spinneretX, spinneretY);
         for (let i = 0; i < silkTrail.length; i++) {
-          silkTrail[i].alpha = Math.max(0, silkTrail[i].alpha - dt * (speed > 600 ? 0.3 : 0.09));
+          silkTrail[i].alpha = Math.max(0, silkTrail[i].alpha - dt * (currentSpeed > 300 ? 0.35 : 0.08));
           ctx.lineTo(silkTrail[i].x, silkTrail[i].y);
         }
         ctx.strokeStyle = 'rgba(16, 185, 129, 0.18)';
@@ -300,11 +300,10 @@ export function SpiderCursor() {
       }
 
       // Gait coordination & Step timing
-      const currentSpeed = Math.hypot(velX, velY);
       stepCooldown -= dt;
 
-      // Rapid stepping proportional to speed: up to 28 steps per second during high-speed sprint
-      const stepDuration = Math.max(0.035, 0.14 - Math.min(0.105, currentSpeed * 0.00015));
+      // Leg step frequency increases dynamically with speed
+      const stepDuration = Math.max(0.035, 0.13 - Math.min(0.095, currentSpeed * 0.00015));
 
       if (stepCooldown <= 0) {
         gaitPhase = 1 - gaitPhase;
@@ -313,22 +312,26 @@ export function SpiderCursor() {
 
       // Process and render legs
       legs.forEach((leg) => {
-        // Base joint on cephalothorax/sternum in world coordinates
+        // Base joint on body in world coordinates
         const baseWorldX = posX + cosA * leg.baseOffsetX - sinA * leg.baseOffsetY;
         const baseWorldY = posY + sinA * leg.baseOffsetX + cosA * leg.baseOffsetY;
 
-        // Ideal resting footprint in world coordinates, with dynamic speed projection
-        const lead = currentSpeed > 30 ? 0.06 : 0;
-        const leadX = velX * lead;
-        const leadY = velY * lead;
+        // Ideal resting footprint in world coordinates, with speed lead compensation
+        const lead = currentSpeed > 40 ? 0.04 : 0;
+        const leadX = frameDeltaX * (lead / Math.max(0.0001, dt));
+        const leadY = frameDeltaY * (lead / Math.max(0.0001, dt));
 
         const idealFootX = posX + cosA * leg.restOffsetX - sinA * leg.restOffsetY + leadX;
         const idealFootY = posY + sinA * leg.restOffsetX + cosA * leg.restOffsetY + leadY;
 
         const footDistToIdeal = Math.hypot(idealFootX - leg.currentX, idealFootY - leg.currentY);
 
-        // Immediate snap / fast-step if mouse flicked across screen (> 65px)
-        if (footDistToIdeal > 65) {
+        // Dynamic step threshold
+        const stepThreshold = currentSpeed > 100 ? 14 : 7;
+        const emergencyThreshold = 36;
+
+        // If distance is huge (> 55px, e.g. sudden huge swipe), snap immediately to stay synchronized
+        if (footDistToIdeal > 55) {
           leg.isStepping = false;
           leg.currentX = idealFootX;
           leg.currentY = idealFootY;
@@ -338,8 +341,6 @@ export function SpiderCursor() {
           leg.toY = idealFootY;
           leg.stepProgress = 1;
         } else if (!leg.isStepping) {
-          const stepThreshold = currentSpeed > 200 ? 22 : 12;
-          const emergencyThreshold = 38;
           if ((leg.group === gaitPhase && footDistToIdeal > stepThreshold) || footDistToIdeal > emergencyThreshold) {
             leg.isStepping = true;
             leg.stepProgress = 0;
@@ -362,8 +363,8 @@ export function SpiderCursor() {
             leg.currentX = leg.toX;
             leg.currentY = leg.toY;
           } else {
-            const t = leg.stepProgress;
-            const ease = t * t * (3 - 2 * t);
+            const stepT = leg.stepProgress;
+            const ease = stepT * stepT * (3 - 2 * stepT);
             leg.currentX = leg.fromX + (leg.toX - leg.fromX) * ease;
             leg.currentY = leg.fromY + (leg.toY - leg.fromY) * ease;
           }
@@ -542,7 +543,6 @@ export function SpiderCursor() {
       ctx.stroke();
 
       // Glowing Compound Optics (8 Arachnid Eyes in Emerald Noir)
-      // Anterior Median Eyes (AME) - two large primary forward lenses
       ctx.save();
       ctx.shadowColor = '#10B981';
       ctx.shadowBlur = 9;
@@ -553,14 +553,14 @@ export function SpiderCursor() {
       ctx.fillStyle = '#34D399';
       ctx.fill();
 
-      // Anterior Lateral Eyes (ALE) - medium flanking lenses
+      // Anterior Lateral Eyes (ALE)
       ctx.beginPath();
       ctx.arc(10.6, -3.8, 1.1, 0, Math.PI * 2);
       ctx.arc(10.6, 3.8, 1.1, 0, Math.PI * 2);
       ctx.fillStyle = '#10B981';
       ctx.fill();
 
-      // Posterior Median & Lateral Eyes (4 secondary crown lenses)
+      // Posterior Eyes
       ctx.shadowBlur = 4;
       ctx.beginPath();
       ctx.arc(8.5, -2.5, 0.9, 0, Math.PI * 2);
@@ -570,9 +570,9 @@ export function SpiderCursor() {
       ctx.fillStyle = '#059669';
       ctx.fill();
 
-      ctx.restore(); // restore eye glow
-      ctx.restore(); // restore spider body transform
-      ctx.restore(); // restore DPR scaling
+      ctx.restore();
+      ctx.restore();
+      ctx.restore();
     };
 
     animFrameId = requestAnimationFrame(animate);
@@ -580,9 +580,11 @@ export function SpiderCursor() {
     return () => {
       cancelAnimationFrame(animFrameId);
       window.removeEventListener('resize', updateCanvasSize);
-      window.removeEventListener('mousemove', onMouseMove);
-      window.removeEventListener('touchmove', onTouchMove);
-      window.removeEventListener('pointerdown', onPointerDown);
+      window.removeEventListener('pointermove', onPointerMove, { capture: true });
+      window.removeEventListener('mousemove', onPointerMove, { capture: true });
+      window.removeEventListener('touchmove', onTouchMove, { capture: true });
+      window.removeEventListener('pointerdown', onPointerDown, { capture: true });
+      document.removeEventListener('pointermove', onPointerMove, { capture: true });
       document.removeEventListener('visibilitychange', onVisibilityChange);
     };
   }, []);
