@@ -1,8 +1,9 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { Project } from '@/types/portfolio';
-import { Mic, Volume2, CheckCircle2, MessageSquare, Play, Sparkles } from 'lucide-react';
+import { Mic, Volume2, CheckCircle2, MessageSquare, Play, Sparkles, ArrowRight } from 'lucide-react';
 
 interface VoiceDemoCardProps {
   project: Project;
@@ -147,9 +148,19 @@ export function VoiceDemoCard({ project }: VoiceDemoCardProps) {
           ))}
         </div>
 
-        <div className="flex items-center gap-1.5 text-xs font-mono text-cyan-400">
-          <MessageSquare className="w-3.5 h-3.5" />
-          <span>Automated SMS</span>
+        <div className="flex items-center gap-3">
+          <Link
+            href={`/projects/${project.id}`}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#161922] hover:bg-[#1E2230] border border-[#1E2230] hover:border-emerald-500/40 text-xs font-mono text-[#F4F4F6] transition-colors"
+          >
+            <span>Case Study</span>
+            <ArrowRight className="w-3.5 h-3.5 text-emerald-400" />
+          </Link>
+
+          <div className="flex items-center gap-1.5 text-xs font-mono text-cyan-400">
+            <MessageSquare className="w-3.5 h-3.5" />
+            <span>Automated SMS</span>
+          </div>
         </div>
       </div>
     </div>

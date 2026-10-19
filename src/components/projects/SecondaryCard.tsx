@@ -1,7 +1,8 @@
 'use client';
 
+import Link from 'next/link';
 import { Project } from '@/types/portfolio';
-import { HeartHandshake, ShieldAlert, PhoneCall, Check } from 'lucide-react';
+import { HeartHandshake, ShieldAlert, PhoneCall, Check, ArrowRight } from 'lucide-react';
 
 interface SecondaryCardProps {
   project: Project;
@@ -87,9 +88,19 @@ export function SecondaryCard({ project }: SecondaryCardProps) {
           ))}
         </div>
 
-        <div className="flex items-center gap-1.5 text-xs font-mono text-rose-400">
-          <PhoneCall className="w-3.5 h-3.5" />
-          <span>1-Tap Dialing</span>
+        <div className="flex items-center gap-3">
+          <Link
+            href={`/projects/${project.id}`}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#161922] hover:bg-[#1E2230] border border-[#1E2230] hover:border-emerald-500/40 text-xs font-mono text-[#F4F4F6] transition-colors"
+          >
+            <span>Case Study</span>
+            <ArrowRight className="w-3.5 h-3.5 text-emerald-400" />
+          </Link>
+
+          <div className="flex items-center gap-1.5 text-xs font-mono text-rose-400">
+            <PhoneCall className="w-3.5 h-3.5" />
+            <span>1-Tap Dialing</span>
+          </div>
         </div>
       </div>
     </div>

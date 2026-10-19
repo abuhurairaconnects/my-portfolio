@@ -1,8 +1,9 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { Project } from '@/types/portfolio';
-import { ExternalLink, Github, Check, Server, ShieldCheck, Cpu } from 'lucide-react';
+import { ExternalLink, Github, Check, Server, ShieldCheck, Cpu, ArrowRight } from 'lucide-react';
 
 interface MasterProjectCardProps {
   project: Project;
@@ -124,6 +125,14 @@ export function MasterProjectCard({ project }: MasterProjectCardProps) {
         </div>
 
         <div className="flex items-center gap-3">
+          <Link
+            href={`/projects/${project.id}`}
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#161922] hover:bg-[#1E2230] border border-[#1E2230] hover:border-emerald-500/40 text-xs font-mono text-[#F4F4F6] transition-colors"
+          >
+            <span>Case Study</span>
+            <ArrowRight className="w-3.5 h-3.5 text-emerald-400" />
+          </Link>
+
           {project.links.repo && (
             <a
               href={project.links.repo}

@@ -171,6 +171,9 @@ export function Footer() {
             <span className="text-[#8E93A4]">
               © 2026 Abu Huraira. All rights reserved. Built with Next.js & TypeScript.
             </span>
+            <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[10px] text-emerald-400 hidden sm:inline">
+              v2.5 Live
+            </span>
           </div>
 
           <div className="flex items-center gap-4">
