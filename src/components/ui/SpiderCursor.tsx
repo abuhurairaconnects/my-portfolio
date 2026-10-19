@@ -124,11 +124,12 @@ export function SpiderCursor() {
       targetX = clientX;
       targetY = clientY;
 
-      // First cursor interaction: immediately teleport spider to cursor
+      // First cursor interaction: initialize spider trailing 56px behind the cursor
       if (!hasMouseMoved) {
         hasMouseMoved = true;
-        posX = clientX;
-        posY = clientY;
+        const trailingDist = 56;
+        posX = clientX - Math.cos(angle) * trailingDist;
+        posY = clientY - Math.sin(angle) * trailingDist;
         const cosA = Math.cos(angle);
         const sinA = Math.sin(angle);
         legs.forEach((leg) => {
@@ -227,35 +228,45 @@ export function SpiderCursor() {
         targetY = height * 0.45 + Math.cos(time * 0.9) * 60;
       }
 
-      // Distance to target cursor
-      const toTargetX = targetX - posX;
-      const toTargetY = targetY - posY;
-      const distToTarget = Math.hypot(toTargetX, toTargetY);
+      // Vector from spider to the actual mouse cursor
+      const toCursorX = targetX - posX;
+      const toCursorY = targetY - posY;
+      const distToCursor = Math.hypot(toCursorX, toCursorY);
 
-      // Critically damped pursuit without dead-zone:
-      // High responsiveness: instantly tracks cursor with silky smooth ease
-      const followRate = distToTarget > 150 ? 30 : 22;
-      const followFactor = 1 - Math.exp(-followRate * dt);
-
-      const prevX = posX;
-      const prevY = posY;
-
-      posX += toTargetX * followFactor;
-      posY += toTargetY * followFactor;
-
-      const frameDeltaX = posX - prevX;
-      const frameDeltaY = posY - prevY;
-      const currentSpeed = Math.hypot(frameDeltaX, frameDeltaY) / dt;
-
-      // Heading orientation: face towards cursor movement
-      if (currentSpeed > 4 || distToTarget > 2) {
-        const moveHeading = Math.atan2(toTargetY, toTargetX);
-        let angleDiff = moveHeading - angle;
+      // Orientation: spider always faces towards the cursor it is pursuing
+      if (distToCursor > 2) {
+        const directHeading = Math.atan2(toCursorY, toCursorX);
+        let angleDiff = directHeading - angle;
         while (angleDiff < -Math.PI) angleDiff += Math.PI * 2;
         while (angleDiff > Math.PI) angleDiff -= Math.PI * 2;
         const turnRate = 28;
         angle += angleDiff * (1 - Math.exp(-turnRate * dt));
       }
+
+      // The spider stays exactly 56px BEHIND the cursor so that any text, button,
+      // or navigation link under the cursor remains completely clear and visible!
+      const trailingDistance = 56;
+      const desiredPosX = targetX - Math.cos(angle) * trailingDistance;
+      const desiredPosY = targetY - Math.sin(angle) * trailingDistance;
+
+      const toGoalX = desiredPosX - posX;
+      const toGoalY = desiredPosY - posY;
+      const distToGoal = Math.hypot(toGoalX, toGoalY);
+
+      // Critically damped pursuit without dead-zone:
+      // High responsiveness: instantly tracks the trailing position with silky smooth ease
+      const followRate = distToGoal > 150 ? 32 : 24;
+      const followFactor = 1 - Math.exp(-followRate * dt);
+
+      const prevX = posX;
+      const prevY = posY;
+
+      posX += toGoalX * followFactor;
+      posY += toGoalY * followFactor;
+
+      const frameDeltaX = posX - prevX;
+      const frameDeltaY = posY - prevY;
+      const currentSpeed = Math.hypot(frameDeltaX, frameDeltaY) / dt;
 
       // Decrement pounce timer
       if (pounceTimer > 0) {
