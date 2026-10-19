@@ -64,52 +64,13 @@ function ensureConfigDir(): void {
 }
 
 function getOrCreateSessionSecret(): string {
-  if (inMemorySecret) return inMemorySecret;
-  ensureConfigDir();
-  const secretFile = getSecretFile();
-  try {
-    if (fs.existsSync(secretFile)) {
-      const secret = fs.readFileSync(secretFile, 'utf-8').trim();
-      if (secret.length >= 32) {
-        inMemorySecret = secret;
-        return secret;
-      }
-    }
-    const newSecret = crypto.randomBytes(32).toString('hex');
-    try {
-      fs.writeFileSync(secretFile, newSecret, 'utf-8');
-    } catch {
-      // Try /tmp
-      try {
-        fs.writeFileSync(path.join('/tmp', 'session-secret.key'), newSecret, 'utf-8');
-      } catch {}
-    }
-    inMemorySecret = newSecret;
-    return newSecret;
-  } catch (err) {
-    const fallback = 'fallback_secure_static_secret_key_abu_huraira_2026';
-    inMemorySecret = fallback;
-    return fallback;
-  }
+  if (process.env.SESSION_SECRET) return process.env.SESSION_SECRET;
+  if (process.env.AUTH_SECRET) return process.env.AUTH_SECRET;
+  return 'abu_huraira_portfolio_v15_deterministic_admin_session_secret_2026';
 }
 
 export function getAdminConfig(): AdminConfig {
   if (inMemoryConfig) return inMemoryConfig;
-
-  // Check custom password from environment variable if configured
-  const envPassword = process.env.ADMIN_PASSWORD || process.env.ADMIN_PASSKEY;
-  if (envPassword && envPassword.trim().length >= 4) {
-    const salt = 'env_salt_abu_huraira';
-    const hash = hashWithSalt(envPassword.trim(), salt);
-    inMemoryConfig = {
-      passwordHash: hash,
-      salt,
-      updatedAt: new Date().toISOString(),
-      allowQuickAccess: true,
-      hasCustomPassword: true,
-    };
-    return inMemoryConfig;
-  }
 
   ensureConfigDir();
   const configFile = getConfigFile();
@@ -130,6 +91,21 @@ export function getAdminConfig(): AdminConfig {
       return inMemoryConfig;
     }
   } catch {}
+
+  // Check custom password from environment variable if configured
+  const envPassword = process.env.ADMIN_PASSWORD || process.env.ADMIN_PASSKEY;
+  if (envPassword && envPassword.trim().length >= 4) {
+    const salt = 'env_salt_abu_huraira';
+    const hash = hashWithSalt(envPassword.trim(), salt);
+    inMemoryConfig = {
+      passwordHash: hash,
+      salt,
+      updatedAt: new Date().toISOString(),
+      allowQuickAccess: true,
+      hasCustomPassword: true,
+    };
+    return inMemoryConfig;
+  }
 
   // Initial default state
   const salt = crypto.randomBytes(16).toString('hex');
@@ -300,4 +276,57 @@ export function verifyAdminSessionToken(token: string | undefined): boolean {
 
   if (bufProvided.length !== bufExpected.length) return false;
   return crypto.timingSafeEqual(bufProvided, bufExpected);
+}
+
+/**
+ * Synchronize in-memory configuration and disk cache from cookie/restored state.
+ */
+export function syncInMemoryConfig(config: AdminConfig): void {
+  inMemoryConfig = config;
+  try {
+    ensureConfigDir();
+    fs.writeFileSync(getConfigFile(), JSON.stringify(config, null, 2), 'utf-8');
+  } catch {
+    try {
+      fs.writeFileSync(path.join('/tmp', 'admin-config.json'), JSON.stringify(config, null, 2), 'utf-8');
+    } catch {}
+  }
+}
+
+/**
+ * Encodes admin security configuration into a cryptographically signed HMAC token.
+ */
+export function encodeConfigCookie(config: AdminConfig): string {
+  const secret = getOrCreateSessionSecret();
+  const payload = Buffer.from(JSON.stringify(config)).toString('base64');
+  const signature = crypto.createHmac('sha256', secret).update(payload).digest('hex');
+  return `${payload}.${signature}`;
+}
+
+/**
+ * Decodes and verifies the HMAC signature of an admin configuration cookie.
+ */
+export function decodeConfigCookie(cookieValue: string | undefined): AdminConfig | null {
+  if (!cookieValue) return null;
+  const parts = cookieValue.split('.');
+  if (parts.length !== 2) return null;
+
+  const [payload, signature] = parts;
+  const secret = getOrCreateSessionSecret();
+  const expectedSig = crypto.createHmac('sha256', secret).update(payload).digest('hex');
+
+  const bufProvided = Buffer.from(signature, 'utf-8');
+  const bufExpected = Buffer.from(expectedSig, 'utf-8');
+  if (bufProvided.length !== bufExpected.length || !crypto.timingSafeEqual(bufProvided, bufExpected)) {
+    return null;
+  }
+
+  try {
+    const jsonStr = Buffer.from(payload, 'base64').toString('utf-8');
+    const parsed = JSON.parse(jsonStr) as AdminConfig;
+    if (typeof parsed.allowQuickAccess === 'boolean' && typeof parsed.passwordHash === 'string') {
+      return parsed;
+    }
+  } catch {}
+  return null;
 }

@@ -19,6 +19,7 @@ import {
   verifyAdminPasswordAction,
   changeAdminPasswordAction,
   getAdminSecurityInfoAction,
+  quickAccessLoginAction,
 } from '@/actions/admin';
 
 interface AdminLoginProps {
@@ -85,7 +86,7 @@ export function AdminLogin({ onAuthenticated }: AdminLoginProps) {
     setLoading(true);
     setError('');
     try {
-      const res = await verifyAdminPasswordAction('7860');
+      const res = await quickAccessLoginAction();
       if (res.success) {
         if (res.token) {
           sessionStorage.setItem('ah_admin_token', res.token);
@@ -93,7 +94,7 @@ export function AdminLogin({ onAuthenticated }: AdminLoginProps) {
         sessionStorage.setItem('ah_admin_auth', 'true');
         onAuthenticated();
       } else {
-        setError(res.message || 'Quick access is unavailable. Please enter passkey.');
+        setError(res.message || 'Quick access is disabled. Please enter your passkey.');
         setLoading(false);
       }
     } catch {

@@ -100,14 +100,24 @@ export function AdminSecuritySettings() {
 
   const handleToggleQuick = async () => {
     setTogglingQuick(true);
+    setStatusMessage(null);
     try {
-      const newState = !allowQuickAccess;
-      const res = await toggleQuickAccessAction(newState, getAdminToken());
+      const targetState = !allowQuickAccess;
+      const res = await toggleQuickAccessAction(targetState, getAdminToken());
       if (res.success) {
-        setAllowQuickAccess(newState);
+        setAllowQuickAccess(res.allowQuickAccess);
+        setStatusMessage({
+          type: 'success',
+          text: res.allowQuickAccess
+            ? 'One-Click Founder Access is now ENABLED.'
+            : 'One-Click Founder Access is now DISABLED. Dashboard requires passkey.',
+        });
+      } else {
+        setStatusMessage({ type: 'error', text: 'Failed to update quick access toggle.' });
       }
     } catch (err) {
       console.error('Failed to toggle quick access:', err);
+      setStatusMessage({ type: 'error', text: 'An unexpected error occurred while toggling quick access.' });
     } finally {
       setTogglingQuick(false);
     }
@@ -292,22 +302,35 @@ export function AdminSecuritySettings() {
             </div>
 
             {/* Quick Access Toggle */}
-            <div className="flex items-start justify-between gap-4 p-3.5 rounded-2xl bg-[#08090D] border border-[#1E2230]">
-              <div>
-                <div className="flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+            <div className="flex items-start justify-between gap-4 p-4 rounded-2xl bg-[#08090D] border border-[#1E2230]">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-emerald-400" />
                   <span className="text-xs font-semibold text-[#F4F4F6]">
                     One-Click Founder Access
                   </span>
+                  <span
+                    className={`px-2 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase transition-colors ${
+                      allowQuickAccess
+                        ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
+                        : 'bg-zinc-800 text-zinc-400 border border-zinc-700'
+                    }`}
+                  >
+                    {allowQuickAccess ? 'Active (ON)' : 'Disabled (OFF)'}
+                  </span>
                 </div>
-                <p className="text-[11px] text-[#8E93A4] mt-0.5 leading-relaxed">
-                  Allows instant login from local development without typing passkey each time.
+                <p className="text-[11px] text-[#8E93A4] leading-relaxed">
+                  {allowQuickAccess
+                    ? 'Allows instant 1-click login from the login page without typing a passkey.'
+                    : '1-Click login is turned off. All dashboard logins require entering your administrative passkey.'}
                 </p>
               </div>
 
               <button
+                type="button"
                 onClick={handleToggleQuick}
                 disabled={togglingQuick}
+                aria-label="Toggle One-Click Founder Access"
                 className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
                   allowQuickAccess ? 'bg-emerald-500' : 'bg-[#1E2230]'
                 }`}
