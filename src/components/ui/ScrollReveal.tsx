@@ -19,13 +19,13 @@ export function ScrollReveal({
   const getOffset = () => {
     switch (direction) {
       case 'up':
-        return { y: 28, x: 0 };
+        return { y: 36, x: 0 };
       case 'down':
-        return { y: -28, x: 0 };
+        return { y: -36, x: 0 };
       case 'left':
-        return { y: 0, x: 28 };
+        return { y: 0, x: 36 };
       case 'right':
-        return { y: 0, x: -28 };
+        return { y: 0, x: -36 };
       case 'none':
         return { y: 0, x: 0 };
     }
@@ -39,7 +39,7 @@ export function ScrollReveal({
         opacity: 0,
         x: offset.x,
         y: offset.y,
-        filter: 'blur(4px)',
+        filter: 'blur(8px)',
       }}
       whileInView={{
         opacity: 1,
@@ -49,9 +49,9 @@ export function ScrollReveal({
       }}
       viewport={{ once: true, margin: '-40px' }}
       transition={{
-        duration: 0.6,
+        duration: 0.75,
         delay,
-        ease: [0.16, 1, 0.3, 1],
+        ease: [0.22, 1, 0.36, 1],
       }}
       className={className}
     >
