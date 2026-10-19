@@ -600,7 +600,7 @@ export function SpiderCursor() {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 pointer-events-none z-[9999] overflow-hidden"
+      className="fixed inset-0 pointer-events-none z-30 overflow-hidden mix-blend-screen"
       aria-hidden="true"
     />
   );
