@@ -71,6 +71,7 @@ export const metadata: Metadata = {
 };
 
 import { GlobalGlobeBackground } from '@/components/layout/GlobalGlobeBackground';
+import { SpiderCursor } from '@/components/ui/SpiderCursor';
 
 export default function RootLayout({
   children,
@@ -98,6 +99,7 @@ export default function RootLayout({
         className={`${spaceGrotesk.variable} ${dmSans.variable} ${jetbrainsMono.variable} antialiased bg-[#08090D] text-[#F4F4F6] min-h-screen selection:bg-emerald-500/20 selection:text-emerald-300 relative`}
       >
         <GlobalGlobeBackground />
+        <SpiderCursor />
         <div className="relative z-10">
           {children}
         </div>
