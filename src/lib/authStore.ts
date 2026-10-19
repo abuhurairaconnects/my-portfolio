@@ -34,7 +34,7 @@ function getSecretFile(): string {
 }
 
 // Default legacy passkeys for initial setup only
-const DEFAULT_PASSKEYS = ['7860', 'abuhuraira2026', 'admin'];
+const DEFAULT_PASSKEYS = ['7860', 'abuhuraira2026'];
 
 // In-Memory Brute-Force Rate Limiter (STRIX-SEC-05)
 const MAX_FAILED_ATTEMPTS = 5;
@@ -101,7 +101,7 @@ export function getAdminConfig(): AdminConfig {
       passwordHash: hash,
       salt,
       updatedAt: new Date().toISOString(),
-      allowQuickAccess: true,
+      allowQuickAccess: process.env.NODE_ENV === 'development',
       hasCustomPassword: true,
     };
     return inMemoryConfig;
@@ -114,7 +114,7 @@ export function getAdminConfig(): AdminConfig {
     passwordHash: defaultHash,
     salt,
     updatedAt: new Date().toISOString(),
-    allowQuickAccess: true,
+    allowQuickAccess: process.env.NODE_ENV === 'development',
     hasCustomPassword: false,
   };
 

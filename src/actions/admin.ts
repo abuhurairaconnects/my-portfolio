@@ -44,7 +44,7 @@ async function saveConfigToCookies(config: AdminConfig): Promise<void> {
     const encoded = encodeConfigCookie(config);
     cookieStore.set(CONFIG_COOKIE_NAME, encoded, {
       httpOnly: true,
-      secure: false, // Ensures cookie functions properly behind reverse proxies and localhost
+      secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       path: '/',
       maxAge: 365 * 24 * 60 * 60, // 1 year
@@ -58,7 +58,7 @@ async function saveConfigToCookies(config: AdminConfig): Promise<void> {
  */
 async function assertAdminAuthenticated(clientToken?: string): Promise<void> {
   // 1. Check explicit client token if supplied
-  if (clientToken && (verifyAdminSessionToken(clientToken) || clientToken.length >= 10)) {
+  if (clientToken && verifyAdminSessionToken(clientToken)) {
     return;
   }
 
@@ -66,7 +66,7 @@ async function assertAdminAuthenticated(clientToken?: string): Promise<void> {
   try {
     const cookieStore = await cookies();
     const sessionToken = cookieStore.get(SESSION_COOKIE_NAME)?.value;
-    if (sessionToken && (verifyAdminSessionToken(sessionToken) || sessionToken.length >= 10)) {
+    if (sessionToken && verifyAdminSessionToken(sessionToken)) {
       return;
     }
   } catch {}
@@ -76,14 +76,14 @@ async function assertAdminAuthenticated(clientToken?: string): Promise<void> {
 
 export async function checkAdminSessionAction(clientToken?: string): Promise<{ authenticated: boolean }> {
   await syncConfigFromCookies();
-  if (clientToken && (verifyAdminSessionToken(clientToken) || clientToken.length >= 10)) {
+  if (clientToken && verifyAdminSessionToken(clientToken)) {
     return { authenticated: true };
   }
 
   try {
     const cookieStore = await cookies();
     const sessionToken = cookieStore.get(SESSION_COOKIE_NAME)?.value;
-    if (sessionToken && (verifyAdminSessionToken(sessionToken) || sessionToken.length >= 10)) {
+    if (sessionToken && verifyAdminSessionToken(sessionToken)) {
       return { authenticated: true };
     }
   } catch {}
@@ -115,7 +115,7 @@ export async function verifyAdminPasswordAction(password: string): Promise<{
       const cookieStore = await cookies();
       cookieStore.set(SESSION_COOKIE_NAME, sessionToken, {
         httpOnly: true,
-        secure: false,
+        secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax',
         path: '/',
         maxAge: 7 * 24 * 60 * 60, // 7 days
@@ -133,6 +133,7 @@ export async function verifyAdminPasswordAction(password: string): Promise<{
 
 /**
  * Instant One-Click Login for the Founder/Owner if enabled in Admin settings
+ * (Restricted to non-production environments to prevent unauthenticated access)
  */
 export async function quickAccessLoginAction(): Promise<{
   success: boolean;
@@ -140,6 +141,13 @@ export async function quickAccessLoginAction(): Promise<{
   token?: string;
 }> {
   try {
+    if (process.env.NODE_ENV === 'production') {
+      return {
+        success: false,
+        message: 'One-Click Founder Access is disabled in production for security. Please enter your admin passkey.',
+      };
+    }
+
     await syncConfigFromCookies();
     const config = getAdminConfig();
     if (!config.allowQuickAccess) {
@@ -154,7 +162,7 @@ export async function quickAccessLoginAction(): Promise<{
       const cookieStore = await cookies();
       cookieStore.set(SESSION_COOKIE_NAME, sessionToken, {
         httpOnly: true,
-        secure: false,
+        secure: false, // Development only
         sameSite: 'lax',
         path: '/',
         maxAge: 7 * 24 * 60 * 60,
@@ -237,13 +245,13 @@ export async function changeAdminPasswordAction(
     if (!currentVerification.valid) {
       // Also check if caller has an active authenticated session
       let isAuthenticated = false;
-      if (token && (verifyAdminSessionToken(token) || token.length >= 10)) {
+      if (token && verifyAdminSessionToken(token)) {
         isAuthenticated = true;
       }
       try {
         const cookieStore = await cookies();
         const sessionToken = cookieStore.get(SESSION_COOKIE_NAME)?.value;
-        if (sessionToken && (verifyAdminSessionToken(sessionToken) || sessionToken.length >= 10)) {
+        if (sessionToken && verifyAdminSessionToken(sessionToken)) {
           isAuthenticated = true;
         }
       } catch {}
@@ -265,7 +273,7 @@ export async function changeAdminPasswordAction(
         const newToken = createAdminSessionToken();
         cookieStore.set(SESSION_COOKIE_NAME, newToken, {
           httpOnly: true,
-          secure: false,
+          secure: process.env.NODE_ENV === 'production',
           sameSite: 'lax',
           path: '/',
           maxAge: 7 * 24 * 60 * 60,
@@ -300,6 +308,7 @@ export async function toggleQuickAccessAction(
   token?: string
 ): Promise<{ success: boolean; allowQuickAccess: boolean }> {
   try {
+    await assertAdminAuthenticated(token);
     await syncConfigFromCookies();
     const success = setQuickAccess(enabled);
     const updated = getAdminConfig();
