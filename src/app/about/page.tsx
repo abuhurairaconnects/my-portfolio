@@ -97,24 +97,6 @@ export default function AboutPage() {
                 priority
                 className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
               />
-
-              {/* Founder Top-Right Floating Pill */}
-              <div className="absolute top-3.5 right-3.5 px-3 py-1.5 rounded-full bg-[#11131A]/95 backdrop-blur-md border border-emerald-500/30 shadow-lg flex items-center gap-1.5 z-10">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                <span className="text-[11px] font-mono text-emerald-400 font-bold uppercase tracking-wider">
-                  Founder
-                </span>
-              </div>
-
-              <div className="absolute inset-0 bg-gradient-to-t from-[#08090D]/85 via-transparent to-transparent pointer-events-none" />
-              <div className="absolute bottom-3 inset-x-3 p-3 rounded-2xl bg-[#11131A]/95 backdrop-blur-md border border-[#1E2230] text-center">
-                <span className="font-display font-bold text-xs text-[#F4F4F6] block">
-                  Abu Huraira
-                </span>
-                <span className="text-[10px] font-mono text-emerald-400">
-                  Founder & Principal Software Architect
-                </span>
-              </div>
             </div>
 
             {/* As-Sunnah Credential Box Below Photo */}

@@ -158,21 +158,6 @@ export function HeroSection() {
                 sizes="(max-width: 768px) 100vw, 400px"
                 className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
               />
-
-              {/* Bottom Photo Identity Badge */}
-              <div className="absolute bottom-3 inset-x-3 p-3 rounded-2xl bg-[#11131A]/95 backdrop-blur-md border border-[#1E2230] shadow-xl flex items-center justify-between gap-3">
-                <div className="min-w-0">
-                  <span className="text-xs font-bold font-display text-[#F4F4F6] block truncate">
-                    Abu Huraira
-                  </span>
-                  <span className="text-[10px] font-mono text-emerald-400 block truncate">
-                    Full-Stack Web Developer & AI Automation
-                  </span>
-                </div>
-                <div className="shrink-0 px-2.5 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-[10px] font-mono text-emerald-400 font-medium whitespace-nowrap">
-                  AI Business Automation
-                </div>
-              </div>
             </div>
 
             {/* INSTITUTIONAL CREDENTIAL & CLIENT TRUST CARD DIRECTLY BELOW PHOTO */}

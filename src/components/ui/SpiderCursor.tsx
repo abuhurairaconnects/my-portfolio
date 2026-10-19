@@ -124,12 +124,12 @@ export function SpiderCursor() {
       targetX = clientX;
       targetY = clientY;
 
-      // First cursor interaction: initialize spider trailing 56px behind the cursor
-      if (!hasMouseMoved) {
-        hasMouseMoved = true;
-        const trailingDist = 56;
-        posX = clientX - Math.cos(angle) * trailingDist;
-        posY = clientY - Math.sin(angle) * trailingDist;
+        // First cursor interaction: initialize spider trailing 84px behind the cursor
+        if (!hasMouseMoved) {
+          hasMouseMoved = true;
+          const trailingDist = 84;
+          posX = clientX - Math.cos(angle) * trailingDist;
+          posY = clientY - Math.sin(angle) * trailingDist;
         const cosA = Math.cos(angle);
         const sinA = Math.sin(angle);
         legs.forEach((leg) => {
@@ -243,9 +243,9 @@ export function SpiderCursor() {
         angle += angleDiff * (1 - Math.exp(-turnRate * dt));
       }
 
-      // The spider stays exactly 56px BEHIND the cursor so that any text, button,
+      // The spider stays exactly 84px BEHIND the cursor so that any text, button,
       // or navigation link under the cursor remains completely clear and visible!
-      const trailingDistance = 56;
+      const trailingDistance = 84;
       const desiredPosX = targetX - Math.cos(angle) * trailingDistance;
       const desiredPosY = targetY - Math.sin(angle) * trailingDistance;
 
