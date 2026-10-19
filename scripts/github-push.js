@@ -18,7 +18,7 @@ async function pushToGitHub() {
     process.exit(1);
   }
 
-  console.log('🚀 Pushing commits to https://github.com/abuhurairaconnects/abu-huraira-portfolio.git (branch: main)...');
+  console.log('🚀 Pushing commits to https://github.com/abuhurairaconnects/my-portfolio.git (branch: main)...');
   try {
     const pushResult = await git.push({
       fs,
