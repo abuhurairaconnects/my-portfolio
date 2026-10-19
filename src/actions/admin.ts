@@ -2,6 +2,8 @@
 
 import { cookies } from 'next/headers';
 import { getInquiries, updateInquiryStatus, deleteInquiry, saveInquiry, Inquiry } from '../lib/inquiriesStore';
+import { getAdminProjects, saveAdminProject, deleteAdminProject, toggleAdminProjectFeatured } from '../lib/projectsStore';
+import { Project } from '@/types/portfolio';
 import {
   verifyAdminPassword,
   setAdminPassword,
@@ -306,5 +308,46 @@ export async function toggleQuickAccessAction(
     console.error('[toggleQuickAccessAction] Error:', err);
     return { success: false, allowQuickAccess: !enabled };
   }
+}
+
+export async function fetchProjectsAction(token?: string): Promise<Project[]> {
+  await assertAdminAuthenticated(token);
+  return await getAdminProjects();
+}
+
+export async function saveProjectAction(
+  project: Project,
+  token?: string
+): Promise<{ success: boolean; project?: Project; message?: string }> {
+  try {
+    await assertAdminAuthenticated(token);
+    const result = await saveAdminProject(project);
+    return { success: true, project: result.project };
+  } catch (err: unknown) {
+    const errorMsg = err instanceof Error ? err.message : 'Failed to save project.';
+    return { success: false, message: errorMsg };
+  }
+}
+
+export async function deleteProjectAction(
+  id: string,
+  token?: string
+): Promise<{ success: boolean; message?: string }> {
+  try {
+    await assertAdminAuthenticated(token);
+    const success = await deleteAdminProject(id);
+    return { success };
+  } catch (err: unknown) {
+    const errorMsg = err instanceof Error ? err.message : 'Failed to delete project.';
+    return { success: false, message: errorMsg };
+  }
+}
+
+export async function toggleProjectFeaturedAction(
+  id: string,
+  token?: string
+): Promise<{ success: boolean; featured?: boolean }> {
+  await assertAdminAuthenticated(token);
+  return await toggleAdminProjectFeatured(id);
 }
 
