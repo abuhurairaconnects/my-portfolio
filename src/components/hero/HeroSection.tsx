@@ -1,7 +1,9 @@
 'use client';
 
+import { useState } from 'react';
 import Image from 'next/image';
 import { portfolioData } from '@/data/portfolio';
+import { DotGlobe } from '@/components/ui/DotGlobe';
 import {
   MapPin,
   Award,
@@ -10,10 +12,13 @@ import {
   ShieldCheck,
   Zap,
   Sparkles,
+  Globe,
+  User,
 } from 'lucide-react';
 
 export function HeroSection() {
   const { person, metrics } = portfolioData;
+  const [activeMediaTab, setActiveMediaTab] = useState<'photo' | 'globe'>('photo');
 
   const coreServices = [
     {
@@ -148,42 +153,96 @@ export function HeroSection() {
 
           {/* Right Column (5 cols): Authentic High-Res Photo & Verification Card */}
           <div className="lg:col-span-5 relative flex flex-col items-center lg:items-end">
-            {/* The Photo Container with Natural Full Color */}
-            <div className="relative w-72 sm:w-80 md:w-96 aspect-[4/5] rounded-3xl overflow-hidden bg-[#11131A] border-2 border-[#1E2230] shadow-2xl shadow-black/90 group">
-              <Image
-                src={person.photoUrl}
-                alt={person.name}
-                fill
-                priority
-                sizes="(max-width: 768px) 100vw, 400px"
-                className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
-              />
+            {/* View Switcher: 👤 My Photo vs 🌍 Worldwide 3D */}
+            <div className="flex items-center gap-1.5 p-1 rounded-full bg-[#11131A] border border-[#1E2230] mb-3 shadow-lg">
+              <button
+                type="button"
+                onClick={() => setActiveMediaTab('photo')}
+                className={`px-3.5 py-1 rounded-full text-xs font-mono transition-all flex items-center gap-1.5 ${
+                  activeMediaTab === 'photo'
+                    ? 'bg-emerald-500 text-[#08090D] font-bold shadow-md'
+                    : 'text-[#8E93A4] hover:text-[#F4F4F6]'
+                }`}
+              >
+                <User className="w-3.5 h-3.5" />
+                <span>👤 My Photo</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveMediaTab('globe')}
+                className={`px-3.5 py-1 rounded-full text-xs font-mono transition-all flex items-center gap-1.5 ${
+                  activeMediaTab === 'globe'
+                    ? 'bg-emerald-500 text-[#08090D] font-bold shadow-md'
+                    : 'text-[#8E93A4] hover:text-[#F4F4F6]'
+                }`}
+              >
+                <Globe className="w-3.5 h-3.5" />
+                <span>🌍 Worldwide 3D</span>
+              </button>
+            </div>
 
-              {/* Founder Top-Right Floating Pill */}
-              <div className="absolute top-3.5 right-3.5 px-3 py-1.5 rounded-full bg-[#11131A]/95 backdrop-blur-md border border-emerald-500/30 shadow-lg flex items-center gap-1.5 z-10">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                <span className="text-[11px] font-mono text-emerald-400 font-bold uppercase tracking-wider">
-                  Founder
-                </span>
-              </div>
+            {/* The Interactive Container with Natural Full Color or 3D Globe */}
+            <div className="relative w-72 sm:w-80 md:w-96 aspect-[4/5] rounded-3xl overflow-hidden bg-[#11131A] border-2 border-[#1E2230] shadow-2xl shadow-black/90 group flex items-center justify-center">
+              {activeMediaTab === 'photo' ? (
+                <>
+                  <Image
+                    src={person.photoUrl}
+                    alt={person.name}
+                    fill
+                    priority
+                    sizes="(max-width: 768px) 100vw, 400px"
+                    className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                  />
 
-              {/* Natural subtle bottom shadow for text legibility */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#08090D]/85 via-transparent to-transparent pointer-events-none" />
+                  {/* Founder Top-Right Floating Pill */}
+                  <div className="absolute top-3.5 right-3.5 px-3 py-1.5 rounded-full bg-[#11131A]/95 backdrop-blur-md border border-emerald-500/30 shadow-lg flex items-center gap-1.5 z-10">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                    <span className="text-[11px] font-mono text-emerald-400 font-bold uppercase tracking-wider">
+                      Founder
+                    </span>
+                  </div>
 
-              {/* Bottom Photo Identity Badge */}
-              <div className="absolute bottom-3 inset-x-3 p-3 rounded-2xl bg-[#11131A]/95 backdrop-blur-md border border-[#1E2230] flex items-center justify-between">
-                <div>
-                  <span className="text-xs font-bold font-display text-[#F4F4F6] block">
-                    Abu Huraira
-                  </span>
-                  <span className="text-[10px] font-mono text-emerald-400">
-                    Full-Stack Web Developer & AI Business Automation
-                  </span>
+                  {/* Natural subtle bottom shadow for text legibility */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#08090D]/85 via-transparent to-transparent pointer-events-none" />
+
+                  {/* Bottom Photo Identity Badge */}
+                  <div className="absolute bottom-3 inset-x-3 p-3 rounded-2xl bg-[#11131A]/95 backdrop-blur-md border border-[#1E2230] flex items-center justify-between">
+                    <div>
+                      <span className="text-xs font-bold font-display text-[#F4F4F6] block">
+                        Abu Huraira
+                      </span>
+                      <span className="text-[10px] font-mono text-emerald-400">
+                        Full-Stack Web Developer & AI Business Automation
+                      </span>
+                    </div>
+                    <div className="px-2 py-0.5 rounded-md bg-emerald-500/10 border border-emerald-500/20 text-[10px] font-mono text-emerald-400 font-medium">
+                      Verified Engineer
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <div className="relative w-full h-full flex flex-col items-center justify-center p-4">
+                  {/* Top helper indicator */}
+                  <div className="absolute top-3.5 inset-x-3 flex items-center justify-between z-10 pointer-events-none">
+                    <div className="px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-[10px] font-mono text-emerald-400 flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                      <span>Worldwide Dhaka Link</span>
+                    </div>
+                    <span className="text-[10px] font-mono text-[#8E93A4] bg-[#08090D]/80 px-2 py-0.5 rounded">
+                      Move cursor to rotate 🖱️
+                    </span>
+                  </div>
+
+                  <DotGlobe size={360} enableInteraction={true} />
+
+                  {/* Bottom Card Identity Footer */}
+                  <div className="absolute bottom-3 inset-x-3 p-2.5 rounded-2xl bg-[#11131A]/95 backdrop-blur-md border border-[#1E2230] flex items-center justify-between text-center">
+                    <span className="text-[11px] font-mono text-emerald-400 mx-auto font-medium">
+                      🌍 Global Deployments · Dhaka HQ (UTC+6)
+                    </span>
+                  </div>
                 </div>
-                <div className="px-2 py-0.5 rounded-md bg-emerald-500/10 border border-emerald-500/20 text-[10px] font-mono text-emerald-400 font-medium">
-                  Verified Engineer
-                </div>
-              </div>
+              )}
             </div>
 
             {/* INSTITUTIONAL CREDENTIAL & CLIENT TRUST CARD DIRECTLY BELOW PHOTO */}

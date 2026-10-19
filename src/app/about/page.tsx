@@ -53,9 +53,8 @@ export default function AboutPage() {
               <span>Personal Narrative & Roots</span>
             </div>
 
-            <h1 className="font-display font-bold text-4xl sm:text-5xl text-[#F4F4F6] tracking-tight leading-tight mb-6">
-              Engineering with purpose, precision, and <br />
-              <span className="text-emerald-400">uncompromising ethics.</span>
+            <h1 className="font-display font-bold text-4xl sm:text-6xl text-[#F4F4F6] tracking-tight leading-tight mb-6">
+              About
             </h1>
 
             <p className="text-base sm:text-lg text-[#8E93A4] leading-relaxed mb-6">

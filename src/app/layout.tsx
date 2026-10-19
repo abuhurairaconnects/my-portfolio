@@ -71,6 +71,7 @@ export const metadata: Metadata = {
 };
 
 import { GlobalGlobeBackground } from '@/components/layout/GlobalGlobeBackground';
+import { ThemeToggle } from '@/components/layout/ThemeToggle';
 
 export default function RootLayout({
   children,
@@ -78,16 +79,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark scroll-smooth">
+    <html lang="en" className="dark scroll-smooth" suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
                 try {
-                  localStorage.removeItem('theme');
-                  document.documentElement.classList.remove('light');
-                  document.documentElement.classList.add('dark');
+                  var saved = localStorage.getItem('theme');
+                  var prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+                  if (saved === 'light' || (!saved && prefersLight)) {
+                    document.documentElement.classList.remove('dark');
+                    document.documentElement.classList.add('light');
+                  } else {
+                    document.documentElement.classList.remove('light');
+                    document.documentElement.classList.add('dark');
+                  }
                 } catch (e) {}
               })();
             `,
@@ -95,11 +102,15 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${spaceGrotesk.variable} ${dmSans.variable} ${jetbrainsMono.variable} antialiased bg-[#08090D] text-[#F4F4F6] min-h-screen selection:bg-emerald-500/20 selection:text-emerald-300 relative`}
+        className={`${spaceGrotesk.variable} ${dmSans.variable} ${jetbrainsMono.variable} antialiased bg-[#08090D] text-[#F4F4F6] min-h-screen selection:bg-emerald-500/20 selection:text-emerald-300 relative transition-colors duration-300`}
       >
         <GlobalGlobeBackground />
         <div className="relative z-10">
           {children}
+        </div>
+        {/* Floating Quick Theme Toggle (All Pages) */}
+        <div className="fixed bottom-6 right-6 z-50 shadow-2xl">
+          <ThemeToggle className="w-11 h-11 shadow-lg ring-2 ring-emerald-500/20" />
         </div>
       </body>
     </html>
