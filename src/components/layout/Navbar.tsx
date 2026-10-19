@@ -6,6 +6,7 @@ import { ArrowUpRight, Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
+import { motion } from 'framer-motion';
 
 export function Navbar() {
   const { person } = portfolioData;
@@ -59,7 +60,15 @@ export function Navbar() {
               >
                 {link.label}
                 {isActive && (
-                  <span className="absolute bottom-0 inset-x-0 h-0.5 bg-emerald-400 rounded-full" />
+                  <motion.span
+                    layoutId="navbar-active-pill"
+                    className="absolute bottom-0 inset-x-0 h-0.5 bg-emerald-400 rounded-full shadow-[0_0_8px_rgba(16,185,129,0.8)]"
+                    transition={{
+                      type: 'spring',
+                      stiffness: 380,
+                      damping: 32,
+                    }}
+                  />
                 )}
               </Link>
             );

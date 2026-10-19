@@ -5,6 +5,7 @@ import { Footer } from '@/components/layout/Footer';
 import { portfolioData } from '@/data/portfolio';
 import { Award, BookOpen, Compass, CheckCircle2, Shield, HeartHandshake, ArrowRight, Download, FileText, CheckCheck, Workflow, Sparkles } from 'lucide-react';
 import Link from 'next/link';
+import { ScrollReveal } from '@/components/ui/ScrollReveal';
 
 export const metadata: Metadata = {
   title: 'About, Ethics & As-Sunnah Foundations | Abu Huraira',
@@ -47,17 +48,18 @@ export default function AboutPage() {
 
       <div className="pt-36 pb-24 max-w-6xl mx-auto px-4 sm:px-6">
         {/* Header Hero */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-24">
-          <div className="lg:col-span-7">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-xs font-mono text-emerald-400 mb-4">
-              <span>Personal Narrative & Roots</span>
-            </div>
+        <ScrollReveal>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-24">
+            <div className="lg:col-span-7">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-xs font-mono text-emerald-400 mb-4">
+                <span>Personal Narrative & Roots</span>
+              </div>
 
-            <h1 className="font-display font-bold text-4xl sm:text-6xl text-[#F4F4F6] tracking-tight leading-tight mb-6">
-              About
-            </h1>
+              <h1 className="font-display font-bold text-4xl sm:text-6xl text-[#F4F4F6] tracking-tight leading-tight mb-6">
+                About
+              </h1>
 
-            <p className="text-base sm:text-lg text-[#8E93A4] leading-relaxed mb-6">
+              <p className="text-base sm:text-lg text-[#8E93A4] leading-relaxed mb-6">
               I am Abu Huraira, a software engineer and AI automation specialist based in Dhaka, Bangladesh. My work is defined by a belief that software should not be superficial or bloated; it must solve real problems, respect user privacy, and operate with verifiable reliability.
             </p>
 
@@ -136,9 +138,11 @@ export default function AboutPage() {
             </div>
           </div>
         </div>
+      </ScrollReveal>
 
         {/* Dedicated Section: How I Work & Delivery Ethics */}
-        <section id="ethics" className="p-8 sm:p-12 rounded-3xl bg-[#0F1118] border border-emerald-500/30 mb-24 shadow-2xl relative overflow-hidden scroll-mt-28">
+        <ScrollReveal delay={0.1}>
+          <section id="ethics" className="p-8 sm:p-12 rounded-3xl bg-[#0F1118] border border-emerald-500/30 mb-24 shadow-2xl relative overflow-hidden scroll-mt-28">
           <div className="max-w-3xl mb-10">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-xs font-mono text-emerald-400 mb-3">
               <Sparkles className="w-3.5 h-3.5" />
@@ -180,110 +184,115 @@ export default function AboutPage() {
             ))}
           </div>
         </section>
+        </ScrollReveal>
 
         {/* The 3 Core Pillars: As-Sunnah, Islamic Studies, Digital Competencies */}
-        <div className="space-y-16 mb-24">
-          <div className="border-b border-[#1E2230] pb-6">
-            <span className="text-xs font-mono text-emerald-400 uppercase tracking-wider block mb-2">
-              Detailed Background
-            </span>
-            <h2 className="font-display font-bold text-3xl sm:text-4xl text-[#F4F4F6]">
-              Educational & Multidisciplinary Pillars
-            </h2>
-          </div>
+        <ScrollReveal delay={0.1}>
+          <div className="space-y-16 mb-24">
+            <div className="border-b border-[#1E2230] pb-6">
+              <span className="text-xs font-mono text-emerald-400 uppercase tracking-wider block mb-2">
+                Detailed Background
+              </span>
+              <h2 className="font-display font-bold text-3xl sm:text-4xl text-[#F4F4F6]">
+                Educational & Multidisciplinary Pillars
+              </h2>
+            </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {educationAndEthics.map((item, idx) => (
-              <div
-                key={idx}
-                className="card-surface rounded-3xl p-8 flex flex-col justify-between"
-              >
-                <div>
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="w-12 h-12 rounded-2xl bg-[#161922] border border-[#1E2230] flex items-center justify-center">
-                      {idx === 0 ? (
-                        <Award className="w-6 h-6 text-emerald-400" />
-                      ) : idx === 1 ? (
-                        <BookOpen className="w-6 h-6 text-amber-400" />
-                      ) : (
-                        <Compass className="w-6 h-6 text-cyan-400" />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {educationAndEthics.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="card-surface rounded-3xl p-8 flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="flex items-center justify-between mb-6">
+                      <div className="w-12 h-12 rounded-2xl bg-[#161922] border border-[#1E2230] flex items-center justify-center">
+                        {idx === 0 ? (
+                          <Award className="w-6 h-6 text-emerald-400" />
+                        ) : idx === 1 ? (
+                          <BookOpen className="w-6 h-6 text-amber-400" />
+                        ) : (
+                          <Compass className="w-6 h-6 text-cyan-400" />
+                        )}
+                      </div>
+                      {item.badge && (
+                        <span className="text-[11px] font-mono px-2.5 py-1 rounded-full bg-[#161922] border border-[#1E2230] text-emerald-400">
+                          {item.badge}
+                        </span>
                       )}
                     </div>
-                    {item.badge && (
-                      <span className="text-[11px] font-mono px-2.5 py-1 rounded-full bg-[#161922] border border-[#1E2230] text-emerald-400">
-                        {item.badge}
-                      </span>
-                    )}
+
+                    <h3 className="font-display font-bold text-xl text-[#F4F4F6] mb-1">
+                      {item.institution}
+                    </h3>
+                    <p className="text-xs font-mono text-emerald-400 mb-4">
+                      {item.title}
+                    </p>
+
+                    <p className="text-xs sm:text-sm text-[#8E93A4] leading-relaxed mb-6">
+                      {item.description}
+                    </p>
+
+                    <ul className="space-y-2 mb-6">
+                      {item.highlights.map((highlight, hIdx) => (
+                        <li key={hIdx} className="flex items-start gap-2 text-xs text-[#8E93A4]">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
+                          <span>{highlight}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-
-                  <h3 className="font-display font-bold text-xl text-[#F4F4F6] mb-1">
-                    {item.institution}
-                  </h3>
-                  <p className="text-xs font-mono text-emerald-400 mb-4">
-                    {item.title}
-                  </p>
-
-                  <p className="text-xs sm:text-sm text-[#8E93A4] leading-relaxed mb-6">
-                    {item.description}
-                  </p>
-
-                  <ul className="space-y-2 mb-6">
-                    {item.highlights.map((highlight, hIdx) => (
-                      <li key={hIdx} className="flex items-start gap-2 text-xs text-[#8E93A4]">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
-                        <span>{highlight}</span>
-                      </li>
-                    ))}
-                  </ul>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
+        </ScrollReveal>
 
         {/* Guiding Principles */}
-        <div className="p-8 sm:p-12 rounded-3xl bg-[#0B0D13] border border-[#1E2230]">
-          <div className="max-w-2xl mb-8">
-            <span className="text-xs font-mono text-emerald-400 uppercase tracking-wider block mb-2">
-              Engineering Manifesto
-            </span>
-            <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#F4F4F6]">
-              Principles I Never Compromise On
-            </h2>
+        <ScrollReveal delay={0.1}>
+          <div className="p-8 sm:p-12 rounded-3xl bg-[#0B0D13] border border-[#1E2230]">
+            <div className="max-w-2xl mb-8">
+              <span className="text-xs font-mono text-emerald-400 uppercase tracking-wider block mb-2">
+                Engineering Manifesto
+              </span>
+              <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#F4F4F6]">
+                Principles I Never Compromise On
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="p-6 rounded-2xl bg-[#11131A] border border-[#1E2230]">
+                <Shield className="w-5 h-5 text-emerald-400 mb-3" />
+                <h3 className="font-display font-semibold text-base text-[#F4F4F6] mb-1.5">
+                  Zero AI Slop
+                </h3>
+                <p className="text-xs text-[#8E93A4] leading-relaxed">
+                  Every line of code is intentional, type-safe, and deterministic. No fake metrics, no cookie-cutter templates, and no shortcuts.
+                </p>
+              </div>
+
+              <div className="p-6 rounded-2xl bg-[#11131A] border border-[#1E2230]">
+                <HeartHandshake className="w-5 h-5 text-emerald-400 mb-3" />
+                <h3 className="font-display font-semibold text-base text-[#F4F4F6] mb-1.5">
+                  Radical Transparency
+                </h3>
+                <p className="text-xs text-[#8E93A4] leading-relaxed">
+                  Clear deadlines, reproducible test suites, honest communication, and no hidden vendor dependencies.
+                </p>
+              </div>
+
+              <div className="p-6 rounded-2xl bg-[#11131A] border border-[#1E2230]">
+                <Award className="w-5 h-5 text-emerald-400 mb-3" />
+                <h3 className="font-display font-semibold text-base text-[#F4F4F6] mb-1.5">
+                  Full Code Ownership
+                </h3>
+                <p className="text-xs text-[#8E93A4] leading-relaxed">
+                  You own 100% of your repository, documentation, and database schemas with ready-to-run Docker and Coolify configs.
+                </p>
+              </div>
+            </div>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="p-6 rounded-2xl bg-[#11131A] border border-[#1E2230]">
-              <Shield className="w-5 h-5 text-emerald-400 mb-3" />
-              <h3 className="font-display font-semibold text-base text-[#F4F4F6] mb-1.5">
-                Zero AI Slop
-              </h3>
-              <p className="text-xs text-[#8E93A4] leading-relaxed">
-                Every line of code is intentional, type-safe, and deterministic. No fake metrics, no cookie-cutter templates, and no shortcuts.
-              </p>
-            </div>
-
-            <div className="p-6 rounded-2xl bg-[#11131A] border border-[#1E2230]">
-              <HeartHandshake className="w-5 h-5 text-emerald-400 mb-3" />
-              <h3 className="font-display font-semibold text-base text-[#F4F4F6] mb-1.5">
-                Radical Transparency
-              </h3>
-              <p className="text-xs text-[#8E93A4] leading-relaxed">
-                Clear deadlines, reproducible test suites, honest communication, and no hidden vendor dependencies.
-              </p>
-            </div>
-
-            <div className="p-6 rounded-2xl bg-[#11131A] border border-[#1E2230]">
-              <Award className="w-5 h-5 text-emerald-400 mb-3" />
-              <h3 className="font-display font-semibold text-base text-[#F4F4F6] mb-1.5">
-                Full Code Ownership
-              </h3>
-              <p className="text-xs text-[#8E93A4] leading-relaxed">
-                You own 100% of your repository, documentation, and database schemas with ready-to-run Docker and Coolify configs.
-              </p>
-            </div>
-          </div>
-        </div>
+        </ScrollReveal>
       </div>
 
       <Footer />

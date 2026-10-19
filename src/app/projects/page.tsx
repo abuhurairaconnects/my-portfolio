@@ -10,6 +10,8 @@ export const metadata: Metadata = {
   description: 'Explore full-stack web platforms, healthcare matching hubs, and Bangla voice automation systems built by Abu Huraira.',
 };
 
+import { ScrollReveal } from '@/components/ui/ScrollReveal';
+
 export default function ProjectsPage() {
   const { projects, testimonials } = portfolioData;
 
@@ -19,30 +21,36 @@ export default function ProjectsPage() {
 
       <div className="pt-36 pb-20 max-w-6xl mx-auto px-4 sm:px-6">
         {/* Page Header */}
-        <div className="max-w-3xl mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-xs font-mono text-emerald-400 mb-4">
-            <span>Engineering Showcase</span>
+        <ScrollReveal>
+          <div className="max-w-3xl mb-12">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-xs font-mono text-emerald-400 mb-4">
+              <span>Engineering Showcase</span>
+            </div>
+
+            <h1 className="font-display font-bold text-4xl sm:text-5xl text-[#F4F4F6] tracking-tight mb-4">
+              Production Case Studies & Systems
+            </h1>
+
+            <p className="text-base sm:text-lg text-[#8E93A4] leading-relaxed">
+              Every application showcased here is a real-world, functional solution solving concrete operational friction—tested, containerized, and deployed with zero placeholder code.
+            </p>
           </div>
-
-          <h1 className="font-display font-bold text-4xl sm:text-5xl text-[#F4F4F6] tracking-tight mb-4">
-            Production Case Studies & Systems
-          </h1>
-
-          <p className="text-base sm:text-lg text-[#8E93A4] leading-relaxed">
-            Every application showcased here is a real-world, functional solution solving concrete operational friction—tested, containerized, and deployed with zero placeholder code.
-          </p>
-        </div>
+        </ScrollReveal>
 
         {/* Directory with Filters */}
-        <ProjectsDirectory projects={projects} />
+        <ScrollReveal delay={0.1}>
+          <ProjectsDirectory projects={projects} />
+        </ScrollReveal>
       </div>
 
       {/* Verified Client Testimonials */}
-      <TestimonialsSection
-        testimonials={testimonials}
-        title="Client & Partner Project Evaluations"
-        subtitle="Direct outcomes and feedback following production deployment and automation"
-      />
+      <ScrollReveal delay={0.15}>
+        <TestimonialsSection
+          testimonials={testimonials}
+          title="Client & Partner Project Evaluations"
+          subtitle="Direct outcomes and feedback following production deployment and automation"
+        />
+      </ScrollReveal>
 
       <Footer />
     </main>
