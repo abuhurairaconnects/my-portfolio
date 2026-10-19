@@ -31,18 +31,7 @@ export function DotGlobe({
   useEffect(() => {
     setIsClient(true);
     
-    // Check initial theme
-    const checkTheme = () => {
-      isLightModeRef.current = document.documentElement.classList.contains('light');
-    };
-    checkTheme();
-
-    const handleThemeChange = (e: Event) => {
-      const custom = e as CustomEvent<{ theme: 'dark' | 'light' }>;
-      isLightModeRef.current = custom.detail?.theme === 'light';
-    };
-
-    window.addEventListener('themechange', handleThemeChange);
+    isLightModeRef.current = false;
 
     // Global cursor direction tracker for smooth globe rotation
     const handleGlobalMouseMove = (e: MouseEvent) => {
@@ -75,7 +64,6 @@ export function DotGlobe({
     window.addEventListener('mousemove', handleGlobalMouseMove, { passive: true });
 
     return () => {
-      window.removeEventListener('themechange', handleThemeChange);
       window.removeEventListener('mousemove', handleGlobalMouseMove);
     };
   }, [enableInteraction]);

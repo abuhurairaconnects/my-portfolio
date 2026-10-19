@@ -6,7 +6,6 @@ import { ArrowUpRight, Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { ThemeToggle } from '@/components/layout/ThemeToggle';
 
 export function Navbar() {
   const { person } = portfolioData;
@@ -67,10 +66,8 @@ export function Navbar() {
           })}
         </div>
 
-        {/* CTA + Theme Toggle + Mobile Toggle */}
+        {/* CTA + Mobile Toggle */}
         <div className="flex items-center gap-2 sm:gap-2.5">
-          <ThemeToggle />
-
           <Link
             href="/hire"
             className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#F4F4F6] text-[#08090D] text-xs font-semibold hover:bg-emerald-400 hover:text-[#08090D] transition-all duration-200 active:scale-95 shadow-sm"
