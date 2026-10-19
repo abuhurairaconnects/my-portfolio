@@ -226,37 +226,44 @@ export function SpiderCursor() {
       const toMouseY = targetY - posY;
       const distToTarget = Math.hypot(toMouseX, toMouseY);
 
-      // Update heading angle smoothly
-      if (distToTarget > 14) {
+      // Instant / super-fast heading alignment
+      if (distToTarget > 6) {
         targetAngle = Math.atan2(toMouseY, toMouseX);
       }
 
       let angleDiff = targetAngle - angle;
       while (angleDiff < -Math.PI) angleDiff += Math.PI * 2;
       while (angleDiff > Math.PI) angleDiff -= Math.PI * 2;
-      const turnSpeed = 9.5;
+      // High-speed responsiveness: turns instantly when far away
+      const turnSpeed = distToTarget > 140 ? 36.0 : 22.0;
       angle += angleDiff * Math.min(1, turnSpeed * dt);
 
-      // Speed & acceleration dynamics
-      const stopDistance = 44; // Stop naturally right before cursor
+      // Super responsive speed curve:
+      // When user moves mouse across the screen, the spider immediately rushes at turbo speed!
+      const stopDistance = 22; // snug right near cursor
       let speed = 0;
 
       if (distToTarget > stopDistance) {
         const moveDist = distToTarget - stopDistance;
-        const maxSpeed = pounceTimer > 0 ? 380 : 300;
-        speed = Math.min(maxSpeed, Math.max(16, moveDist * 4.2));
+        // Scales proportionally with distance up to 4200 px/s so it keeps up instantly
+        speed = Math.min(4200, moveDist * 14 + 220);
       }
 
       if (pounceTimer > 0) {
-        pounceTimer = Math.max(0, pounceTimer - dt * 2.8);
+        pounceTimer = Math.max(0, pounceTimer - dt * 3.0);
       }
 
       // Desired velocity vector
-      const desiredVelX = Math.cos(angle) * speed;
-      const desiredVelY = Math.sin(angle) * speed;
+      // At larger distances, blend directly towards the target for immediate interception
+      const directAngle = Math.atan2(toMouseY, toMouseX);
+      const headingBlend = distToTarget > 140 ? 0.4 : 0.05;
+      const moveAngle = angle * (1 - headingBlend) + directAngle * headingBlend;
 
-      // Smooth inertia
-      const accel = 13.0;
+      const desiredVelX = Math.cos(moveAngle) * speed;
+      const desiredVelY = Math.sin(moveAngle) * speed;
+
+      // Ultra-snappy acceleration: 28.0 (no sluggish ramp-up lag)
+      const accel = 28.0;
       velX += (desiredVelX - velX) * Math.min(1, accel * dt);
       velY += (desiredVelY - velY) * Math.min(1, accel * dt);
 
@@ -284,7 +291,7 @@ export function SpiderCursor() {
         ctx.beginPath();
         ctx.moveTo(spinneretX, spinneretY);
         for (let i = 0; i < silkTrail.length; i++) {
-          silkTrail[i].alpha = Math.max(0, silkTrail[i].alpha - dt * 0.09);
+          silkTrail[i].alpha = Math.max(0, silkTrail[i].alpha - dt * (speed > 600 ? 0.3 : 0.09));
           ctx.lineTo(silkTrail[i].x, silkTrail[i].y);
         }
         ctx.strokeStyle = 'rgba(16, 185, 129, 0.18)';
@@ -296,8 +303,8 @@ export function SpiderCursor() {
       const currentSpeed = Math.hypot(velX, velY);
       stepCooldown -= dt;
 
-      // Rapid stepping when sprinting, deliberate when stalking
-      const stepDuration = currentSpeed > 160 ? 0.09 : currentSpeed > 60 ? 0.13 : 0.18;
+      // Rapid stepping proportional to speed: up to 28 steps per second during high-speed sprint
+      const stepDuration = Math.max(0.035, 0.14 - Math.min(0.105, currentSpeed * 0.00015));
 
       if (stepCooldown <= 0) {
         gaitPhase = 1 - gaitPhase;
@@ -311,7 +318,7 @@ export function SpiderCursor() {
         const baseWorldY = posY + sinA * leg.baseOffsetX + cosA * leg.baseOffsetY;
 
         // Ideal resting footprint in world coordinates, with dynamic speed projection
-        const lead = currentSpeed > 25 ? 0.07 : 0;
+        const lead = currentSpeed > 30 ? 0.06 : 0;
         const leadX = velX * lead;
         const leadY = velY * lead;
 
@@ -320,12 +327,19 @@ export function SpiderCursor() {
 
         const footDistToIdeal = Math.hypot(idealFootX - leg.currentX, idealFootY - leg.currentY);
 
-        // Step trigger logic:
-        // Stepping if in active gait phase OR overstretched in emergency recovery
-        const stepThreshold = currentSpeed > 120 ? 18 : 12;
-        const emergencyThreshold = 44;
-
-        if (!leg.isStepping) {
+        // Immediate snap / fast-step if mouse flicked across screen (> 65px)
+        if (footDistToIdeal > 65) {
+          leg.isStepping = false;
+          leg.currentX = idealFootX;
+          leg.currentY = idealFootY;
+          leg.fromX = idealFootX;
+          leg.fromY = idealFootY;
+          leg.toX = idealFootX;
+          leg.toY = idealFootY;
+          leg.stepProgress = 1;
+        } else if (!leg.isStepping) {
+          const stepThreshold = currentSpeed > 200 ? 22 : 12;
+          const emergencyThreshold = 38;
           if ((leg.group === gaitPhase && footDistToIdeal > stepThreshold) || footDistToIdeal > emergencyThreshold) {
             leg.isStepping = true;
             leg.stepProgress = 0;
@@ -339,7 +353,6 @@ export function SpiderCursor() {
         // Animate leg lift and touchdown
         if (leg.isStepping) {
           leg.stepProgress += dt / stepDuration;
-          // Dynamically adjust landing point to keep up with moving body
           leg.toX = idealFootX;
           leg.toY = idealFootY;
 
@@ -350,7 +363,6 @@ export function SpiderCursor() {
             leg.currentY = leg.toY;
           } else {
             const t = leg.stepProgress;
-            // Smooth natural stepping ease
             const ease = t * t * (3 - 2 * t);
             leg.currentX = leg.fromX + (leg.toX - leg.fromX) * ease;
             leg.currentY = leg.fromY + (leg.toY - leg.fromY) * ease;
