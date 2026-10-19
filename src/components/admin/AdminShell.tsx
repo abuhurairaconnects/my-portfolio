@@ -138,6 +138,7 @@ export function AdminShell() {
           <Link
             href="/"
             target="_blank"
+            rel="noopener noreferrer"
             className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#161922] hover:bg-[#1B202D] border border-[#1E2230] text-xs font-mono text-[#8E93A4] hover:text-[#F4F4F6] transition-colors"
           >
             <span>Live Portfolio</span>

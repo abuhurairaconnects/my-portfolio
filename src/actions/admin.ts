@@ -238,31 +238,18 @@ export async function changeAdminPasswordAction(
   token?: string
 ): Promise<{ success: boolean; message: string }> {
   try {
+    // 1. Enforce active administrator authentication session (STRIX-SEC-01)
+    await assertAdminAuthenticated(token);
     await syncConfigFromCookies();
 
-    // 1. Verify current password
+    // 2. Strictly verify current passkey to prevent session hijacking / CSRF takeovers (STRIX-SEC-02)
     const currentVerification = verifyAdminPassword(currentPassword);
     if (!currentVerification.valid) {
-      // Also check if caller has an active authenticated session
-      let isAuthenticated = false;
-      if (token && verifyAdminSessionToken(token)) {
-        isAuthenticated = true;
-      }
-      try {
-        const cookieStore = await cookies();
-        const sessionToken = cookieStore.get(SESSION_COOKIE_NAME)?.value;
-        if (sessionToken && verifyAdminSessionToken(sessionToken)) {
-          isAuthenticated = true;
-        }
-      } catch {}
-
-      if (!isAuthenticated) {
-        return { success: false, message: 'Current password does not match.' };
-      }
+      return { success: false, message: 'Current administrator passkey is incorrect.' };
     }
 
-    if (!newPassword || newPassword.trim().length < 4) {
-      return { success: false, message: 'New password must be at least 4 characters.' };
+    if (!newPassword || newPassword.trim().length < 6) {
+      return { success: false, message: 'New password must be at least 6 characters.' };
     }
 
     const success = setAdminPassword(newPassword.trim());
@@ -274,7 +261,7 @@ export async function changeAdminPasswordAction(
         cookieStore.set(SESSION_COOKIE_NAME, newToken, {
           httpOnly: true,
           secure: process.env.NODE_ENV === 'production',
-          sameSite: 'lax',
+          sameSite: 'strict',
           path: '/',
           maxAge: 7 * 24 * 60 * 60,
         });
@@ -285,7 +272,7 @@ export async function changeAdminPasswordAction(
     return { success: false, message: 'Failed to write updated password to secure storage.' };
   } catch (err) {
     console.error('[changeAdminPasswordAction] Error:', err);
-    return { success: false, message: 'An unexpected server error occurred while updating the password.' };
+    return { success: false, message: 'Access Denied: Valid administrator session and correct passkey required.' };
   }
 }
 
@@ -296,10 +283,11 @@ export async function getAdminSecurityInfoAction(): Promise<{
 }> {
   await syncConfigFromCookies();
   const config = getAdminConfig();
+  const isProd = process.env.NODE_ENV === 'production';
   return {
     hasCustomPassword: config.hasCustomPassword,
     updatedAt: config.updatedAt,
-    allowQuickAccess: config.allowQuickAccess,
+    allowQuickAccess: isProd ? false : config.allowQuickAccess,
   };
 }
 
