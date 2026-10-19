@@ -77,11 +77,11 @@ export function HeroSection() {
             {/* Primary Action Buttons */}
             <div className="flex flex-wrap items-center gap-3 mb-6">
               <Link
-                href="#selected-work"
+                href="/projects"
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-emerald-500 hover:bg-emerald-400 text-[#08090D] font-display font-bold text-xs sm:text-sm transition-all shadow-lg shadow-emerald-500/20 active:scale-95"
               >
                 <span>Explore My Work</span>
-                <ArrowDown className="w-4 h-4" />
+                <ArrowUpRight className="w-4 h-4" />
               </Link>
 
               <Link

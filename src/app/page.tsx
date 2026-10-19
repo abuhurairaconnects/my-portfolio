@@ -1,13 +1,7 @@
 import type { Metadata } from 'next';
 import { Navbar } from '@/components/layout/Navbar';
 import { HeroSection } from '@/components/hero/HeroSection';
-import { SelectedWorkSection } from '@/components/home/SelectedWorkSection';
-import { ServicesTeaser } from '@/components/home/ServicesTeaser';
-import { SkillsMatrix } from '@/components/skills/SkillsMatrix';
-import { TestimonialsSection } from '@/components/home/TestimonialsSection';
-import { ConversionBanner } from '@/components/home/ConversionBanner';
 import { Footer } from '@/components/layout/Footer';
-import { portfolioData } from '@/data/portfolio';
 import Link from 'next/link';
 import { ArrowRight, FolderKanban, Wrench, GraduationCap, Sparkles } from 'lucide-react';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
@@ -57,41 +51,26 @@ export default function HomePage() {
     <main className="min-h-screen bg-transparent text-[#F4F4F6] relative selection:bg-emerald-500/20 selection:text-emerald-300">
       <Navbar />
       
-      {/* 1. Commanding Hero with clean photo & clear CTAs */}
+      {/* 1. Commanding Hero with photo & clear CTAs (Screen 1) */}
       <HeroSection />
 
-      {/* 2. Featured Selected Work Showcase (Flagship Production Systems) */}
+      {/* 2. Focused Navigation Gateways to Deep Subpages (Screen 2 - Just 1-2 scrolls total) */}
       <ScrollReveal showHairline>
-        <SelectedWorkSection projects={portfolioData.projects} />
-      </ScrollReveal>
-
-      {/* 3. Core Client Services & Value Offerings */}
-      <ScrollReveal showHairline delay={0.05}>
-        <ServicesTeaser />
-      </ScrollReveal>
-
-      {/* 4. Engineering Capabilities & As-Sunnah Ethical Foundations */}
-      <ScrollReveal showHairline delay={0.05}>
-        <SkillsMatrix />
-      </ScrollReveal>
-
-      {/* 5. Focused Navigation Gateways to Deep Subpages */}
-      <ScrollReveal showHairline delay={0.05}>
-        <section className="py-20 border-t border-[#1E2230]/70 bg-[#06070A]">
+        <section className="py-16 border-t border-[#1E2230]/70 bg-[#06070A]">
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
-            <div className="max-w-2xl mb-12">
+            <div className="max-w-2xl mb-10">
               <span className="text-xs font-mono text-emerald-400 uppercase tracking-wider block mb-2">
-                Deep Explanations & Dedicated Sections
+                Explore Dedicated Sections
               </span>
-              <h2 className="font-display font-bold text-2xl sm:text-4xl text-[#F4F4F6] tracking-tight">
+              <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#F4F4F6] tracking-tight">
                 Where would you like to explore next?
               </h2>
-              <p className="text-xs sm:text-sm text-[#8E93A4] mt-2 leading-relaxed">
-                Every domain is documented with transparent engineering case studies, full tech breakdowns, and direct communication channels.
+              <p className="text-xs sm:text-sm text-[#8E93A4] mt-1.5 leading-relaxed">
+                Each domain is organized into its own dedicated page. Click any card below or use the top navigation menu.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
               {exploreGateways.map((item, idx) => {
                 const Icon = item.icon;
                 return (
@@ -130,17 +109,7 @@ export default function HomePage() {
         </section>
       </ScrollReveal>
 
-      {/* 6. Authentic Client Testimonials (Grounded evaluations) */}
-      <ScrollReveal showHairline delay={0.05}>
-        <TestimonialsSection testimonials={portfolioData.testimonials} />
-      </ScrollReveal>
-
-      {/* 7. Direct Collaboration & High-Intent Conversion Banner */}
-      <ScrollReveal showHairline delay={0.05}>
-        <ConversionBanner />
-      </ScrollReveal>
-
-      {/* 8. Footer */}
+      {/* 3. Clean Footer */}
       <Footer />
     </main>
   );
