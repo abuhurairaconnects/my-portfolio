@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { portfolioData } from '@/data/portfolio';
 import {
   MapPin,
@@ -10,6 +11,9 @@ import {
   ShieldCheck,
   Zap,
   Sparkles,
+  ArrowDown,
+  ArrowUpRight,
+  Download,
 } from 'lucide-react';
 
 export function HeroSection() {
@@ -46,7 +50,7 @@ export function HeroSection() {
             <div className="flex flex-wrap items-center gap-2 mb-5">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-xs font-mono text-emerald-400">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                <span>Available for Q4/2026 Projects & Roles</span>
+                <span>Available for New Projects</span>
               </div>
 
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#11131A] border border-[#1E2230] text-xs font-mono text-[#8E93A4]">
@@ -69,6 +73,34 @@ export function HeroSection() {
             <p className="text-xs sm:text-sm text-[#8E93A4] max-w-xl leading-relaxed mb-6">
               {person.summary}
             </p>
+
+            {/* Primary Action Buttons */}
+            <div className="flex flex-wrap items-center gap-3 mb-6">
+              <Link
+                href="#selected-work"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-emerald-500 hover:bg-emerald-400 text-[#08090D] font-display font-bold text-xs sm:text-sm transition-all shadow-lg shadow-emerald-500/20 active:scale-95"
+              >
+                <span>Explore My Work</span>
+                <ArrowDown className="w-4 h-4" />
+              </Link>
+
+              <Link
+                href="/contact"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#11131A] hover:bg-[#161922] border border-[#1E2230] hover:border-emerald-500/40 text-[#F4F4F6] text-xs sm:text-sm font-semibold transition-all active:scale-95"
+              >
+                <span>Contact Me</span>
+                <ArrowUpRight className="w-4 h-4 text-emerald-400" />
+              </Link>
+
+              <a
+                href={person.resumeUrl || '/Abu-Huraira-Resume.pdf'}
+                download
+                className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-[#11131A] hover:bg-[#161922] border border-[#1E2230] text-[#8E93A4] hover:text-[#F4F4F6] text-xs font-mono transition-colors"
+              >
+                <Download className="w-3.5 h-3.5" />
+                <span>Resume</span>
+              </a>
+            </div>
 
             {/* WHAT I DO - 3 CORE SERVICES BOARD */}
             <div className="w-full max-w-xl p-4 sm:p-5 rounded-2xl bg-[#11131A] border border-[#1E2230] shadow-xl shimmer-container mb-6">
@@ -207,10 +239,10 @@ export function HeroSection() {
                 </div>
               </div>
 
-              {/* Ethical Pledge Tag */}
-              <div className="pt-2.5 border-t border-[#1E2230] flex items-center justify-between text-[10px] font-mono text-[#8E93A4]">
+              {/* Ethical Pledge & Communication Response Time */}
+              <div className="pt-2.5 border-t border-[#1E2230] flex flex-wrap items-center justify-between gap-2 text-[10px] font-mono text-[#8E93A4]">
                 <span className="text-emerald-400 font-medium"># Islamic Ethical Standards</span>
-                <span>Fast 2–4h Turnaround</span>
+                <span className="text-[#8E93A4]">Typical Inquiry Response: 2–4 Hours</span>
               </div>
             </div>
           </div>

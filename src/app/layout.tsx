@@ -22,32 +22,17 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://abuhuraira.dev'),
-  title: 'Abu Huraira | Full-Stack Web Developer & AI Business Automation',
-  description: 'I build fast web platforms and AI automations that remove manual work and turn visitors into clients.',
-  keywords: [
-    'Abu Huraira',
-    'Full-Stack Web Developer',
-    'AI Business Automation',
-    'Full-Stack Web Development',
-    'Application Development',
-    'Next.js 15',
-    'React 19',
-    'TypeScript',
-    'PostgreSQL',
-    'Docker',
-    'Coolify',
-    'Dhaka Bangladesh Developer',
-    'As-Sunnah Skill Development',
-  ],
+  metadataBase: new URL('https://abuhuraira-portfolio.vercel.app'),
+  title: 'Abu Huraira | Full-Stack Web Developer & Software Engineer',
+  description: 'I build fast web platforms, software products, and AI automations that remove manual work and turn visitors into clients.',
   authors: [{ name: portfolioData.person.name, url: 'https://github.com/abuhurairaconnects' }],
   creator: portfolioData.person.name,
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://abuhuraira.dev',
-    title: 'Abu Huraira | Full-Stack Web Developer & AI Business Automation',
-    description: 'I build fast web platforms and AI automations that remove manual work and turn visitors into clients.',
+    url: 'https://abuhuraira-portfolio.vercel.app',
+    title: 'Abu Huraira | Full-Stack Web Developer & Software Engineer',
+    description: 'I build fast web platforms, software products, and AI automations that remove manual work and turn visitors into clients.',
     siteName: `${portfolioData.person.name} Portfolio`,
     images: [
       {

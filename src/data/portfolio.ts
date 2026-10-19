@@ -9,8 +9,8 @@ export const portfolioData: PortfolioData = {
       'AI Business Automation',
     ],
     tagline: 'Full-Stack Web Developer & AI Business Automation',
-    heroHook: 'I build fast, reliable web platforms and AI automations that remove manual work, scale with your business, and turn visitors into clients.',
-    summary: 'Full-Stack Web Developer and AI Business Automation, trained at As-Sunnah Skill Development. I deliver clean, zero-slop work with honest communication and production-ready results, so you get systems that work from day one.',
+    heroHook: 'I build fast, reliable web platforms, software products, and AI automations that solve real-world problems.',
+    summary: 'Full-Stack Web Developer and Software Engineer trained at As-Sunnah Skill Development Institute. I deliver clean, production-ready systems with transparent communication, disciplined execution, and complete code ownership.',
     location: 'Dhaka, Bangladesh',
     timezone: 'UTC+6 (BST)',
     status: {
@@ -26,13 +26,13 @@ export const portfolioData: PortfolioData = {
       phone: '+880 1869-171818',
     },
     photoUrl: '/profile.jpg',
-    founderRole: 'Founder & Full-Stack Architect',
+    founderRole: 'Full-Stack Web & Software Architect',
     instituteName: 'As-Sunnah Skill Development Institute',
     instituteCredential: 'Professional Skill Development & Ethical Career Training Graduate',
     trustHighlights: [
       'Trained & Certified at As-Sunnah Skill Development Institute',
-      'Founder-Led Direct Engineering — Zero Outsource / Zero Middlemen',
-      '100% Client Codebase Ownership & Docker / VPS Independence',
+      'Direct Engineering & Architecture — Zero Outsourcing',
+      '100% Code & Database Ownership with Docker & VPS Setup',
       'Tested Production Systems (Madrasa Management, Joruri Rokto, Voice Farm)',
     ],
     resumeUrl: '/Abu-Huraira-Resume.pdf',
@@ -40,13 +40,13 @@ export const portfolioData: PortfolioData = {
   metrics: [
     {
       label: 'Production Systems',
-      value: '3+',
-      detail: 'Enterprise & healthtech platforms deployed live',
+      value: '3',
+      detail: 'Madrasa Management, Joruri Rokto & Voice Farm live systems',
     },
     {
       label: 'Hours Automated',
       value: '100+ hrs/mo',
-      detail: 'Eliminated manual tasks & instant report generation',
+      detail: 'Automated student billing, grading reports & speech entry',
     },
     {
       label: 'Code Ownership',
@@ -383,8 +383,7 @@ export const portfolioData: PortfolioData = {
       role: 'Director & Academic Coordinator',
       organization: 'Darul Uloom Madrasa Complex',
       projectAssociated: 'Madrasa Management System',
-      quote: 'Abu Huraira transformed our complex student admissions, fee tracking, and exam grading into an effortless digital portal. What previously took days of manual ledger searching now dispatches reports to parents in seconds. An exceptionally trustworthy, disciplined, and reliable engineer.',
-      verified: true,
+      quote: 'Abu Huraira transformed our student admissions, fee tracking, and exam grading into an effortless digital portal. What previously took days of manual ledger searching now dispatches reports to parents in seconds. An exceptionally trustworthy, disciplined, and reliable engineer.',
     },
     {
       id: 'test-2',
@@ -392,8 +391,7 @@ export const portfolioData: PortfolioData = {
       role: 'Founding Coordinator',
       organization: 'Human Aid Blood Network',
       projectAssociated: 'Joruri Rokto Emergency Platform',
-      quote: 'The zero-barrier, 1-tap direct dialing system Abu Huraira built has already saved crucial 10 to 15 minutes during critical emergencies where every second counts. His ethical commitment, integrity, and technical execution are world-class.',
-      verified: true,
+      quote: 'The zero-barrier, 1-tap direct dialing system Abu Huraira built has already saved crucial 10 to 15 minutes during critical emergencies where every second counts. His ethical commitment, integrity, and disciplined technical execution made our emergency workflow significantly faster and reliable.',
     },
     {
       id: 'test-3',
@@ -401,8 +399,7 @@ export const portfolioData: PortfolioData = {
       role: 'Managing Partner',
       organization: 'Haque Agro & Fisheries',
       projectAssociated: 'Smart Agro & Voice Accountant',
-      quote: 'Typing on phone screens with muddy, wet hands was nearly impossible for our fishery team. Abu Huraira\'s voice accounting system parses natural speech directly into our database and sends an automated daily SMS summary. An extraordinarily practical and innovative platform.',
-      verified: true,
+      quote: 'Typing on phone screens with muddy, wet hands was nearly impossible for our fishery team. Abu Huraira\'s voice accounting system parses natural speech directly into our database and sends an automated daily SMS summary. A practical and reliable automation solution that solved our day-to-day data entry challenges.',
     },
   ],
 };

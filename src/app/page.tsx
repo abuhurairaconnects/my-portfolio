@@ -1,18 +1,18 @@
 import type { Metadata } from 'next';
 import { Navbar } from '@/components/layout/Navbar';
 import { HeroSection } from '@/components/hero/HeroSection';
+import { SelectedWorkSection } from '@/components/home/SelectedWorkSection';
 import { TestimonialsSection } from '@/components/home/TestimonialsSection';
 import { Footer } from '@/components/layout/Footer';
 import { portfolioData } from '@/data/portfolio';
 import Link from 'next/link';
 import { ArrowRight, FolderKanban, Wrench, GraduationCap, Sparkles } from 'lucide-react';
+import { ScrollReveal } from '@/components/ui/ScrollReveal';
 
 export const metadata: Metadata = {
-  title: 'Abu Huraira | Full-Stack Web Developer & AI Business Automation',
-  description: 'I build fast web platforms and AI automations that remove manual work and turn visitors into clients.',
+  title: 'Abu Huraira | Full-Stack Web Developer & Software Engineer',
+  description: 'I build fast web platforms, software products, and AI automations that remove manual work and turn visitors into clients.',
 };
-
-import { ScrollReveal } from '@/components/ui/ScrollReveal';
 
 export default function HomePage() {
   const exploreGateways = [
@@ -54,10 +54,15 @@ export default function HomePage() {
     <main className="min-h-screen bg-transparent text-[#F4F4F6] relative selection:bg-emerald-500/20 selection:text-emerald-300">
       <Navbar />
       
-      {/* 1. Commanding Hero with all 5 roles visible & shimmer effect */}
+      {/* 1. Commanding Hero with clean photo & clear CTAs */}
       <HeroSection />
 
-      {/* 2. Focused Navigation Gateways to Individual Dedicated Pages */}
+      {/* 2. Featured Selected Work Showcase */}
+      <ScrollReveal>
+        <SelectedWorkSection projects={portfolioData.projects} />
+      </ScrollReveal>
+
+      {/* 3. Focused Navigation Gateways to Individual Dedicated Pages */}
       <ScrollReveal>
         <section className="py-16 border-t border-[#1E2230]/70 bg-[#06070A]">
           <div className="max-w-6xl mx-auto px-4 sm:px-6">

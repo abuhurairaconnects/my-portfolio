@@ -23,7 +23,7 @@ export function TestimonialsSection({
         <div className="max-w-2xl mb-12">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-xs font-mono text-emerald-400 mb-3">
             <Star className="w-3.5 h-3.5 fill-emerald-400 text-emerald-400" />
-            <span>Verified Endorsements</span>
+            <span>Client Feedback & Reviews</span>
           </div>
 
           <h2 className="font-display font-bold text-2xl sm:text-3xl text-[#F4F4F6] tracking-tight">
@@ -70,13 +70,6 @@ export function TestimonialsSection({
                     {item.role}, <span className="text-emerald-400/90">{item.organization}</span>
                   </p>
                 </div>
-
-                {item.verified && (
-                  <div className="flex items-center gap-1 text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-md border border-emerald-500/20 shrink-0">
-                    <CheckCircle className="w-3 h-3" />
-                    <span>Verified</span>
-                  </div>
-                )}
               </div>
             </div>
           ))}

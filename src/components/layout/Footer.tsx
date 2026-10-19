@@ -157,7 +157,7 @@ export function Footer() {
             {/* Live Status Pill */}
             <div className="mt-5 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[11px] font-mono text-emerald-400">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span>Available for Q4/2026</span>
+              <span>Available for New Projects</span>
             </div>
           </div>
         </div>
@@ -169,19 +169,11 @@ export function Footer() {
               {person.monogram}
             </div>
             <span className="text-[#8E93A4]">
-              © 2026 Abu Huraira. Handcrafted with zero AI-slop discipline.
+              © 2026 Abu Huraira. All rights reserved. Built with Next.js & TypeScript.
             </span>
           </div>
 
           <div className="flex items-center gap-4">
-            <Link
-              href="/admin"
-              className="hover:text-emerald-400 transition-colors flex items-center gap-1.5 text-[11px]"
-            >
-              <span>Admin Console</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500/60" />
-            </Link>
-
             <button
               onClick={scrollToTop}
               className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#11131A] hover:bg-[#161922] border border-[#1E2230] text-xs font-mono text-[#8E93A4] hover:text-[#F4F4F6] transition-colors"
