@@ -184,14 +184,31 @@ export function HeroSection() {
             {/* The Interactive Container with Natural Full Color or 3D Globe */}
             <div className="relative w-72 sm:w-80 md:w-96 aspect-[4/5] rounded-3xl overflow-hidden bg-[#11131A] border-2 border-[#1E2230] shadow-2xl shadow-black/90 group flex items-center justify-center">
               {activeMediaTab === 'photo' ? (
-                <Image
-                  src={person.photoUrl}
-                  alt={person.name}
-                  fill
-                  priority
-                  sizes="(max-width: 768px) 100vw, 400px"
-                  className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
-                />
+                <>
+                  <Image
+                    src={person.photoUrl}
+                    alt={person.name}
+                    fill
+                    priority
+                    sizes="(max-width: 768px) 100vw, 400px"
+                    className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                  />
+
+                  {/* Bottom Photo Identity Badge */}
+                  <div className="absolute bottom-3 inset-x-3 p-3 rounded-2xl bg-[#11131A]/95 backdrop-blur-md border border-[#1E2230] shadow-xl flex items-center justify-between gap-3">
+                    <div className="min-w-0">
+                      <span className="text-xs font-bold font-display text-[#F4F4F6] block truncate">
+                        Abu Huraira
+                      </span>
+                      <span className="text-[10px] font-mono text-emerald-400 block truncate">
+                        Full-Stack Web Developer & AI Automation
+                      </span>
+                    </div>
+                    <div className="shrink-0 px-2.5 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-[10px] font-mono text-emerald-400 font-medium whitespace-nowrap">
+                      AI Business Automation
+                    </div>
+                  </div>
+                </>
               ) : (
                 <div className="relative w-full h-full flex flex-col items-center justify-center p-4">
                   {/* Top helper indicator */}
