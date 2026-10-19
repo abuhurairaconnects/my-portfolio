@@ -14,8 +14,13 @@ export interface Inquiry {
   inquiryType?: 'contact' | 'hire';
 }
 
+let inMemoryInquiries: Inquiry[] | null = null;
+
 function getDataDir(): string {
   if (process.env.DATA_DIR) return process.env.DATA_DIR;
+  if (process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME) {
+    return path.join('/tmp', 'portfolio-data');
+  }
   const cwd = process.cwd();
   if (cwd.includes('.next/standalone')) {
     return path.join(path.resolve(cwd.split('.next/standalone')[0]), 'data');
@@ -73,13 +78,15 @@ function ensureDataFile() {
 }
 
 export async function getInquiries(): Promise<Inquiry[]> {
+  if (inMemoryInquiries) return inMemoryInquiries;
   try {
     ensureDataFile();
     const data = fs.readFileSync(getInquiriesFilePath(), 'utf-8');
-    return JSON.parse(data);
+    inMemoryInquiries = JSON.parse(data);
+    return inMemoryInquiries!;
   } catch (err) {
-    console.error('[inquiriesStore] Error reading inquiries:', err);
-    return INITIAL_INQUIRIES;
+    inMemoryInquiries = [...INITIAL_INQUIRIES];
+    return inMemoryInquiries;
   }
 }
 
@@ -93,10 +100,14 @@ export async function saveInquiry(inquiry: Omit<Inquiry, 'id' | 'timestamp' | 's
     status: 'new',
   };
   const updated = [newInquiry, ...current].slice(0, 200);
+  inMemoryInquiries = updated;
   try {
     fs.writeFileSync(getInquiriesFilePath(), JSON.stringify(updated, null, 2), 'utf-8');
   } catch (err) {
-    console.error('[inquiriesStore] Error writing inquiries:', err);
+    // If writing fails, try /tmp
+    try {
+      fs.writeFileSync(path.join('/tmp', 'inquiries.json'), JSON.stringify(updated, null, 2), 'utf-8');
+    } catch {}
   }
   return newInquiry;
 }
